@@ -1,12 +1,13 @@
-from flask import Flask, request, jsonify, render_template
-import json
+from flask import Flask, request
 from database.dbaction import insertDB
+import datetime
 
 app = Flask(__name__)
 
 @app.route('/api/add_message/', methods=['GET', 'POST'])
 def add_message():
     content = request.json
+    content['created'] = datetime.datetime.now()
     print(content)
     insertDB(content)
     return "ok"
