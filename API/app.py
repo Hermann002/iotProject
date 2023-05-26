@@ -9,8 +9,13 @@ def add_message():
     content = request.json
     content['created'] = datetime.datetime.now()
     print(content)
-    insertDB(content)
+
+    try:
+        insertDB(content)
+    except Exception as e:
+        print("erreur d'envoie")
+
     return "ok"
 
 if __name__ == '__main__':
-    app.run(host= '0.0.0.0',debug=True)
+    app.run(host= '0.0.0.0', debug=True)
