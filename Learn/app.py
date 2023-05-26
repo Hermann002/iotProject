@@ -5,6 +5,7 @@ external_stylesheets = ['https://fonts.googleapis.com/css?family=Audiowide', 'ht
 
 app = Dash(__name__, use_pages = True, external_stylesheets=external_stylesheets)
 
+
 app.layout = html.Div([
 	
     html.Header(
