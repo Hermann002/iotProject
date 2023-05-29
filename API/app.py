@@ -47,10 +47,10 @@ def register():
         else:
             # insert in mongo database
             try:
-                user.signUp(token = token)
+                user.signUp(token)
             except Exception as e:
                 print(e) 
-            return render_template('auth/token.html', token = token)
+            return render_template("auth/token.html", key = token)
     
     else:
         return render_template('auth/register.html')
