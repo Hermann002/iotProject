@@ -1,0 +1,19 @@
+<!doctype html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %} - IoT</title>
+    </head>
+
+    <nav>
+        <h1>IoT - plateform</h1>
+        <ul>
+        </ul>
+    </nav>
+    
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% block content %}{% endblock %}
+    </section>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h4>Copiez insérez ce token dans le microcontroleur</h4>
+{% endblock %}
+
+{% block content %}
+    <h3>{{token}}</h3>
+    <a href="{{ url_for(app.home) }}"> retourner à l'accueil </a>
+{% endblock %}

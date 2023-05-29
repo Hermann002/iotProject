@@ -1,6 +1,7 @@
 from dash import Dash, html, dcc
 import dash
 
+# insert external css files
 external_stylesheets = ['https://fonts.googleapis.com/css?family=Audiowide', 'https://fonts.googleapis.com/css2?family=Hind+Madurai']
 
 app = Dash(__name__, use_pages = True, external_stylesheets=external_stylesheets)

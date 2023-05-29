@@ -11,23 +11,17 @@ def connect():
     try:
         client.admin.command('ping')
     except Exception as e:
-        print("impossible se connecter")
+        print("impossible de se connecter")
     return client
 
-
+# find data in mongo database
 def findData():
     client = connect()
     mydb = client["iot_database"]
     mycol = mydb["capteur"]
 
     result = []
-    for x in mycol.find({},{"_id":0, "temperature":1, "humidity":1, "created":1}).sort("created"):
+    # find data without _id and sort them by created
+    for x in mycol.find({},{"_id":0, "temperature":1, "humidity":1, "created":1}).sort("created"): 
         result.append(x)
     return result
-
-def insertUser(data):
-    client = connect()
-    mydb = client["iot_database"]
-    mycol = mydb["User"]
-
-    mycol.insert_one(data)

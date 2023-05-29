@@ -1,5 +1,4 @@
-from database import connect, insertUser
-from flask import request
+from .dbaction import findUser, insertUser
 
 class User:
     is_admin = False
@@ -18,5 +17,5 @@ class User:
             'numero': self.userNumber,
             'email': self.userEmail,
             'password': self.password,
-            'token': token
+            'token': token,
         })

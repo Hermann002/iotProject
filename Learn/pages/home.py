@@ -8,6 +8,5 @@ layout = html.Div(className = "new-page",children=[
 
     html.Div(children='''
         This is our Home page content.
-    '''),
-
+    ''')
 ])
