@@ -18,4 +18,19 @@ def insertDB(data):
     mycol = mydb["capteur"]
 
     mycol.insert_one(data)
+
+def findData(token):
+    client = connect()
+    mydb = client["iot_database"]
+    mycol = mydb["capteur"]
+
+    myQuery = {
+        'token' : token
+    }
+
+    result = []
+    # find data without _id and sort them by created
+    for x in mycol.find(myQuery ,{"_id":0, "temperature":1, "humidity":1, "created":1}).sort("created"): 
+        result.append(x)
+    return result
     

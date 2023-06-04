@@ -2,15 +2,15 @@
 import dash
 from dash import html, dash_table, dcc
 import plotly.express as px
-from models.database import findData
+from ..dbmongo import findData
 import pandas as pd
 # from dash.exceptions import PreventUpdate
 
-dash.register_page(__name__)
+dash.register_page(__name__, path_template="/<token>")
 
 # Incorporate data
 
-def layout(token=None, **other_unknown_query_strings):
+def layout(token=None):
 
     df = pd.DataFrame(findData(token))
 
@@ -24,11 +24,11 @@ def layout(token=None, **other_unknown_query_strings):
 
         html.Div([
             html.Div([
-                dash_table.DataTable(data = df.to_dict('records'), page_size=13, style_table={'overflowX': 'auto'})
+                dash_table.DataTable(data = df.to_dict('records'), page_size=13, style_table={'overflowX': 'auto'},  id='table')
             ], className='tab'),
 
             html.Div([
-                dcc.Graph(figure=px.line(df, x='created', y=['temperature','humidity']), className='my-first-graph-final')
+                dcc.Graph(figure=px.line(df, x='created', y=['temperature','humidity']), className='my-first-graph-final',  id='graph')
             ], className='grh'),
         ],className = "analytics"),
 

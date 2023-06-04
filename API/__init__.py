@@ -1,11 +1,61 @@
 import os
 
-from flask import Flask
+from flask import Flask, redirect
+from dash import Dash
+import dash
 
+from dash import Dash, html, dash_table, dcc
+from flask import g
+import plotly.express as px
+# from .db import findData
+import pandas as pd
+from .dbmongo import findData
+from .auth import login_required
 
 def create_app(test_config = None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+
+    # app_dash = Dash(__name__, server = app, url_base_pathname='/analytics/')
+
+    def create_dashapp(server):
+
+        external_stylesheets = ['https://fonts.googleapis.com/css?family=Audiowide', 'https://fonts.googleapis.com/css2?family=Hind+Madurai']
+
+        app = Dash(
+            server=server,
+            use_pages= True,
+            external_stylesheets=external_stylesheets,
+            url_base_pathname='/analytics/'
+        )
+        app.config['suppress_callback_exceptions'] = True
+        app.title='Analytics'
+
+        # Set the layout
+        app.layout = layout = html.Div([
+	
+            html.Header(
+                [
+                html.A("Home", href="http://127.0.0.1:5000", className='nav-item'),
+                    html.Nav([
+                        html.Div(
+                            className = "nav-items",
+                            children = [
+                                dcc.Link("", href=page["relative_path"], className='nav-item')]
+                        )
+                            for page in dash.page_registry.values()
+                    ],className = "nav-bar"),
+                
+                    html.Span('Dashboard', className='title-header')
+                ],className="app-header"),
+            
+            
+            dash.page_container
+        ],className="main")
+
+        # Register callbacks here if you want...
+
+    create_dashapp(app)
 
     from . import db
     db.init_app(app)
@@ -40,4 +90,10 @@ def create_app(test_config = None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
+    
+    @app.route('/analytics/')
+    @login_required
+    def redirect_to_dashapp():
+        return redirect('/analytics/')
+        
     return app

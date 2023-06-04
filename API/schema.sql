@@ -5,5 +5,6 @@ CREATE TABLE user(
     username TEXT UNIQUE NOT NULL,
     useremail TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    token TEXT UNIQUE NOT NULL
+    token TEXT UNIQUE NOT NULL, 
+    is_admin BOOLEAN DEFAULT FALSE
 );

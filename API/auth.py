@@ -7,6 +7,7 @@ from flask import(
 from werkzeug.security import check_password_hash, generate_password_hash
 import uuid
 from .db import get_db
+from .model import User
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -16,7 +17,7 @@ def register():
         username = request.form['username']
         useremail = request.form['useremail']
         password = request.form['password']
-        token = str(uuid.uuid1())
+        # token = str(uuid.uuid1())
         db = get_db()
         error = None
 
@@ -28,16 +29,13 @@ def register():
             error = 'Password is required.'
         
         if error is None:
+            user = User(username, useremail, password)
             try:
-                db.execute(
-                    "INSERT INTO user (username, useremail, password, token) VALUES (?, ?, ?, ?)",
-                    (username, useremail, generate_password_hash(password), token),
-                )
-                db.commit()
+                user.insertUser()
             except db.IntegrityError:
                 error  = f'User{username} is already registered'
             else:
-                flash(f'mettre ce token dans le microcontroleur {token}')
+                flash(f'mettre ce token dans le microcontroleur {user.token}')
                 return redirect(url_for("auth.login"))
             
         flash(error)
@@ -92,3 +90,21 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+# vue du coté administrateur pour plus tard 
+
+# @bp.route('/db_access/')
+# @login_required
+# def access():
+#     if g.user['useremail'] == 'hermannnzeudeu@gmail.com':
+#         try:
+#             db = get_db()
+#             count = db.execute('SELECT * FROM user').fetchall()
+#             result = []
+#             for coun in count:
+#                 result.append(dict(coun))
+#         except Exception as e:
+#             print(e)
+#         return result
+#     else:
+#         return "vous n'avez pas les accès à cette page :("
