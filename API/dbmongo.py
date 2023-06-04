@@ -1,5 +1,4 @@
 from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 import certifi
 
 def connect():
@@ -20,27 +19,18 @@ def insertDB(data):
 
     mycol.insert_one(data)
 
-# insert data of new users in database
-def insertUser(data):
+def findData(token):
     client = connect()
     mydb = client["iot_database"]
-    mycol = mydb["User"]
-
-    mycol.insert_one(data)
-
-def findUser(userEmail, numero):
-    client = connect()
-    mydb = client["iot_database"]
-    mycol = mydb["User"]
+    mycol = mydb["capteur"]
 
     myQuery = {
-        "email" : userEmail,
-        "numero" : numero
-        }
-    
-    x = mycol.find_one(myQuery)
-    if x:
-        return True
-    else:
-        return False
+        'token' : token
+    }
+
+    result = []
+    # find data without _id and sort them by created
+    for x in mycol.find(myQuery ,{"_id":0, "temperature":1, "humidity":1, "created":1}).sort("created"): 
+        result.append(x)
+    return result
     

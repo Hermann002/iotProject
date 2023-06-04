@@ -1,27 +1,43 @@
-# Import packages
-import dash
-from dash import html, dash_table, dcc, callback, Output, Input
+# Create a function which creates your dashapp
+from dash import Dash, html, dash_table, dcc, callback, Output, Input
+from flask import g
 import plotly.express as px
-from models.database import findData
+# from .db import findData
 import pandas as pd
 from dash.exceptions import PreventUpdate
 
-dash.register_page(__name__)
+
+app.config['suppress_callback_exceptions'] = True
+app.title='Dash App'
 
 # Incorporate data
-df = pd.DataFrame(findData())
+token = g.user
+df = pd.DataFrame(1)
 
 # App layout
-layout = html.Div([
+app.layout = html.Div([
     html.Div([
         html.H2('My First App with Data, Graph, and Controls', className="text")
     ]),
+
+    html.Header(
+    [
+        html.Nav([
+            html.Div(
+                className = "nav-items",
+                children = [
+                    dcc.Link("Home", href="api/home.html", className='nav-item')],
+            )
+        ],className = "nav-bar"),
+    
+        html.Span('Dashboard', className='title-header')
+    ],className="app-header"),
 
     html.Button('refresh', id='refresh'),
 
     html.Div([
         html.Div([
-            dash_table.DataTable(data = df.to_dict('records'), page_size=10, style_table={'overflowX': 'auto'},  id='table')
+            dash_table.DataTable(data = df.to_dict('records'), page_size=15, style_table={'overflowX': 'auto'},  id='table')
         ], className='tab'),
 
         html.Div([
@@ -42,7 +58,7 @@ def update_output(n_clicks):
     if n_clicks is None:
         raise PreventUpdate
     else:
-        df = pd.DataFrame(findData())
+        df = pd.DataFrame(1)
         data = df.to_dict('records')
     return data
 
@@ -55,6 +71,8 @@ def update_output(n_clicks):
     if n_clicks is None:
         raise PreventUpdate
     else:
-        df = pd.DataFrame(findData())
+        df = pd.DataFrame(1)
         figure = px.line(df, x='created', y=['temperature','humidity'])
     return figure
+
+return app
