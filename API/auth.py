@@ -44,17 +44,16 @@ def register():
 @bp.route('/login', methods = ('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['username']
         useremail = request.form['useremail']
         password = request.form['password']
         db = get_db()
         error = None
         user = db.execute(
-            'SELECT * FROM user WHERE (username, useremail) = (?, ?)', (username, useremail,)
+            'SELECT * FROM user WHERE (useremail) = (?)', ( useremail,)
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect useremail or username.'
+            error = 'Incorrect useremail'
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password'
 

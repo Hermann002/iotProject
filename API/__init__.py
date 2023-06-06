@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect
+from flask import Flask, redirect, request
 from dash import Dash
 import dash
 
@@ -12,11 +12,11 @@ import pandas as pd
 from .dbmongo import findData
 from .auth import login_required
 
+"""debut de l'Application dash"""
+
 def create_app(test_config = None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-
-    # app_dash = Dash(__name__, server = app, url_base_pathname='/analytics/')
 
     def create_dashapp(server):
 
@@ -52,6 +52,8 @@ def create_app(test_config = None):
             
             dash.page_container
         ],className="main")
+
+    """ Fin de l'application DASH"""
 
         # Register callbacks here if you want...
 
@@ -93,7 +95,7 @@ def create_app(test_config = None):
     
     @app.route('/analytics/')
     @login_required
-    def redirect_to_dashapp():
+    def analytics():
         return redirect('/analytics/')
         
     return app

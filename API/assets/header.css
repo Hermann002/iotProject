@@ -1,7 +1,6 @@
-/* html,body{
-    height: auto;
-    width: 100%;
-} */
+body{
+    padding: 5px auto;
+} 
 .title-header {
     font-size: 30px;
     color: rgb(247, 113, 113);
@@ -10,7 +9,6 @@
     margin-bottom: 10px;
     font-family: "Audiowide", sans-serif;
 }
-
 
 .app-header{
     display: flex;
@@ -80,6 +78,11 @@
 
 .main{
     height: 100%;
+}
+
+a{
+    margin-left: 10px;
+    font-size: 16px;
 }
 
 @media screen and (max-width: 850px) {

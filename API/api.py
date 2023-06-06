@@ -7,19 +7,24 @@ from .auth import login_required
 from .db import get_db
 import datetime
 
-from .dbmongo import insertDB
+from .dbmongo import insertDB, findToken
 
 bp = Blueprint('api', __name__)
 
 @bp.route('/')
 def index():
+    # connect to sqlite database
     db = get_db()
-    # posts = db.execute(
-    #     'SELECT p.id, title, body, created, author_id, username'
-    #     ' FROM post as p JOIN user as u ON p.author_id = u.id'
-    #     ' ORDER BY created DESC'
-    # ).fetchall()
-    return render_template('blog/index.html')
+
+    # check if user is login
+    if g.user is None or g.user['is_admin'] == False:
+        return render_template('blog/index.html')
+    else:
+        tokens = findToken()
+         
+        print(tokens)
+        return render_template('blog/index.html', tokens=tokens)
+        
 
 @bp.route('/add_message/', methods=['GET', 'POST'])
 def add_message():

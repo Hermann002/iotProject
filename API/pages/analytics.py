@@ -2,16 +2,17 @@
 import dash
 from dash import html, dash_table, dcc
 import plotly.express as px
-from ..dbmongo import findData
+from ..dbmongo import findData, findToken
 import pandas as pd
+from ..auth import login_required
 # from dash.exceptions import PreventUpdate
 
 dash.register_page(__name__, path_template="/<token>")
 
 # Incorporate data
-
+@login_required
 def layout(token=None):
-
+    # find data in MongoDB
     df = pd.DataFrame(findData(token))
 
     # App layout
@@ -33,8 +34,6 @@ def layout(token=None):
         ],className = "analytics"),
 
     ],className="new-page")
-
-    # create callbacks to refresh data in table and graph
     
     return lay
 
