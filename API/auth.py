@@ -56,7 +56,7 @@ def login():
             error = 'Incorrect useremail'
         elif not check_password_hash(user['password'], password):
             error = 'Incorrect password'
-
+        # set cookies
         if error is None:
             session.clear()
             session['user_token'] = user['token']

@@ -16,7 +16,7 @@ def index():
     # connect to sqlite database
     db = get_db()
 
-    # check if user is login
+    # check if user is login and if he is admin
     if g.user is None or g.user['is_admin'] == False:
         return render_template('blog/index.html')
     else:
