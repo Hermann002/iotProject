@@ -1,5 +1,6 @@
 import functools
-
+from psycopg2 import IntegrityError
+from psycopg2.extras import DictCursor
 from flask import(
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -32,7 +33,7 @@ def register():
             user = User(username, useremail, password)
             try:
                 user.insertUser()
-            except db.IntegrityError:
+            except IntegrityError :
                 error  = f'User{username} is already registered'
             else:
                 flash(f'mettre ce token dans le microcontroleur {user.token}')
@@ -48,10 +49,9 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE (useremail) = (?)', ( useremail,)
-        ).fetchone()
-
+        exc = db.cursor(cursor_factory=DictCursor)
+        exc.execute('SELECT * FROM "user" WHERE useremail = %s', (useremail,))
+        user = exc.fetchone()
         if user is None:
             error = 'Incorrect useremail'
         elif not check_password_hash(user['password'], password):
@@ -67,13 +67,14 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_token = session.get('user_token')
+    db = get_db()
+    exc = db.cursor(cursor_factory=DictCursor)
 
     if user_token is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-            'SELECT * FROM user WHERE token = ?', (user_token,)
-        ).fetchone()
+        exc.execute('SELECT * FROM "user" WHERE token = %s', (user_token,))
+        g.user = exc.fetchone()
 
 @bp.route('/logout')
 def logout():

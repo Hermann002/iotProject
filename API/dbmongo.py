@@ -47,6 +47,7 @@ def findToken():
         result.append(x)
     results = pd.DataFrame(result)
 
+    # create a list that contain all tokens of users
     i = 0
     for x in results['token']:
         if x == tokens[i]:

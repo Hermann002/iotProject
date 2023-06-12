@@ -1,15 +1,12 @@
 import os
 
-from flask import Flask, redirect, request
+from flask import Flask, redirect
 from dash import Dash
 import dash
 
-from dash import Dash, html, dash_table, dcc
+from dash import Dash, html, dcc
 from flask import g
-import plotly.express as px
-# from .db import findData
-import pandas as pd
-from .dbmongo import findData
+
 from .auth import login_required
 
 """debut de l'Application dash"""
@@ -32,7 +29,7 @@ def create_app(test_config = None):
         app.title='Analytics'
 
         # Set the layout
-        app.layout = layout = html.Div([
+        app.layout = html.Div([
 	
             html.Header(
                 [
@@ -70,9 +67,13 @@ def create_app(test_config = None):
     app.add_url_rule('/', endpoint='index')
 
 
+    # app.config.from_mapping(
+    #     SECRET_KEY = 'dev',
+    #     DATABASE=os.path.join(app.instance_path, 'API.sqlite'),
+    # )
     app.config.from_mapping(
         SECRET_KEY = 'dev',
-        DATABASE=os.path.join(app.instance_path, 'API.sqlite'),
+        DATABASE = os.path.join(app.instance_path, 'API.bd'),
     )
 
     if test_config is None:

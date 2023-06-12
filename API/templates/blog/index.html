@@ -4,7 +4,7 @@
   <h1>{% block title %}IoT{% endblock %}</h1>
   {% if g.user['is_admin'] %}
     {% for toke in tokens %}
-      <a class="action" href="/analytics/{{toke}}">Graph utilisateur</a>
+      <a class="action" href="/analytics/{{toke}}">Graph utilisateur </a>
     {% endfor %}
   {% endif %}
 {% endblock %}

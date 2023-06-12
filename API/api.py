@@ -2,7 +2,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
 from werkzeug.exceptions import abort
-
+from psycopg2.extras import DictCursor
 from .auth import login_required
 from .db import get_db
 import datetime
@@ -15,7 +15,7 @@ bp = Blueprint('api', __name__)
 def index():
     # connect to sqlite database
     db = get_db()
-
+    exc = db.cursor(cursor_factory=DictCursor)
     # check if user is login and if he is admin
     if g.user is None or g.user['is_admin'] == False:
         return render_template('blog/index.html')
@@ -23,7 +23,7 @@ def index():
         tokens = findToken()
          
         print(tokens)
-        return render_template('blog/index.html', tokens=tokens)
+        return render_template('blog/index.html', tokens=tokens, exc=exc)
         
 
 @bp.route('/add_message/', methods=['GET', 'POST'])

@@ -13,11 +13,13 @@ class User:
 
     def insertUser(self):
         db = get_db()
-        db.execute(
-                    "INSERT INTO user (username, useremail, password, token) VALUES (?, ?, ?, ?)",
+        exc = db.cursor()
+        exc.execute(
+                    'INSERT INTO "user" (username, useremail, password, token) VALUES (%s, %s, %s, %s)',
                     (self.username, self.useremail, generate_password_hash(self.password), self.token),
                 )
         db.commit()
+        db.close()
 
     def get_is_admin(self):
         return self.__is_admin
