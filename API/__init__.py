@@ -38,8 +38,8 @@ def create_app(test_config = None):
                         html.Div(
                             className = "nav-items",
                             children = [
-                                dcc.Link("", href=page["relative_path"], className='nav-item')]
-                        )
+                                dcc.Link("", href=page["relative_path"], className='nav-item')
+                            ])
                             for page in dash.page_registry.values()
                     ],className = "nav-bar"),
                 

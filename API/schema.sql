@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS "users" CASCADE;
 
-CREATE TABLE "user" (
+CREATE TABLE "users"(
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     useremail TEXT UNIQUE NOT NULL,
@@ -8,3 +8,16 @@ CREATE TABLE "user" (
     token TEXT UNIQUE NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE
 );
+
+DROP TABLE IF EXISTS "allow_to";
+
+CREATE TABLE "allow_to"(
+    id SERIAL PRIMARY KEY,
+    temp_hum BOOLEAN DEFAULT FALSE,
+    volt_int BOOLEAN DEFAULT FALSE,
+    SMOKE BOOLEAN DEFAULT FALSE,
+    token TEXT UNIQUE NOT NULL,
+    CONSTRAINT fk_user
+      FOREIGN KEY(token) 
+	  REFERENCES "users"(token)
+)

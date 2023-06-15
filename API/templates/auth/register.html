@@ -12,6 +12,11 @@
     <input name="useremail" id="useremail" required>
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
+    <label for="choise">Modules souhaités</label>
+      Température<input type="checkbox" name="option" value="temp_hum">
+      Voltage et intensité<input type="checkbox" name="option" value="volt_int">
+      Fumée<input type="checkbox" name="option" value="smoke">
+    </select>
     <input type="submit" value="Register">
   </form>
 {% endblock %}

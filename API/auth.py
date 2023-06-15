@@ -8,7 +8,31 @@ from flask import(
 from werkzeug.security import check_password_hash, generate_password_hash
 import uuid
 from .db import get_db
-from .model import User
+
+"""define the classes"""
+class User:
+
+    def __init__(self, username, useremail, password):
+        self.username = username
+        self.useremail = useremail
+        self.password = password
+        self.token = str(uuid.uuid1())
+        self.__is_admin = False
+
+    def get_is_admin(self):
+        return self.__is_admin
+    
+    def set_is_admin(self, is_admin):
+        self.__is_admin = is_admin
+
+class Allow_to:
+
+    def __init__(self, temp_hum = False, volt_int = False, smoke = False):
+        self.temp_hum = temp_hum
+        self.volt_int = volt_int
+        self.smoke = smoke
+        
+"""start creating app"""
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -18,8 +42,11 @@ def register():
         username = request.form['username']
         useremail = request.form['useremail']
         password = request.form['password']
+        modules = request.form.getlist('option')
+        temp_hum = False
+        volt_int = False
+        smoke = False
         # token = str(uuid.uuid1())
-        db = get_db()
         error = None
 
         if not username:
@@ -31,10 +58,35 @@ def register():
         
         if error is None:
             user = User(username, useremail, password)
+
+             # verification des modules choisis
+            if 'temp_hum' in modules:
+                temp_hum = True
+            if 'volt_int' in modules:
+                volt_int = True
+            if 'smoke' in modules:
+                smoke = True
+            allow_to = Allow_to(temp_hum, volt_int, smoke)
+
+            # insertion des informations dans la base de donnée
             try:
-                user.insertUser()
+                db = get_db()
+                exc = db.cursor()
+
+                exc.execute(
+                    'INSERT INTO "users" (username, useremail, password, token) VALUES (%s, %s, %s, %s)',
+                    (user.username, user.useremail, generate_password_hash(user.password), user.token),
+                    )
+
+                exc.execute(
+                    'INSERT INTO "allow_to" (temp_hum, volt_int, smoke, token) VALUES (%s, %s, %s, %s)',
+                    (allow_to.temp_hum, allow_to.volt_int, allow_to.smoke, user.token)
+                    )
+                
+                db.commit()
+                db.close()
             except IntegrityError :
-                error  = f'User{username} is already registered'
+                error  =  'already registered'
             else:
                 flash(f'mettre ce token dans le microcontroleur {user.token}')
                 return redirect(url_for("auth.login"))
@@ -47,11 +99,17 @@ def login():
     if request.method == 'POST':
         useremail = request.form['useremail']
         password = request.form['password']
-        db = get_db()
+        
         error = None
-        exc = db.cursor(cursor_factory=DictCursor)
-        exc.execute('SELECT * FROM "user" WHERE useremail = %s', (useremail,))
-        user = exc.fetchone()
+        try:
+            db = get_db()
+            exc = db.cursor(cursor_factory=DictCursor)
+            exc.execute('SELECT * FROM "users" WHERE useremail = %s', (useremail,))
+            user = exc.fetchone()
+        except Exception as e:
+            flash('Veuillez vérifier votre connexion et reessayez !')
+            return render_template('auth/login.html')
+        
         if user is None:
             error = 'Incorrect useremail'
         elif not check_password_hash(user['password'], password):
@@ -67,20 +125,27 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_token = session.get('user_token')
-    db = get_db()
-    exc = db.cursor(cursor_factory=DictCursor)
 
     if user_token is None:
         g.user = None
     else:
-        exc.execute('SELECT * FROM "user" WHERE token = %s', (user_token,))
-        g.user = exc.fetchone()
+        try:
+            db = get_db()
+            exc = db.cursor(cursor_factory=DictCursor)
+            exc.execute('SELECT * FROM "users" WHERE token = %s', (user_token,))
+            g.user = exc.fetchone()
+        except Exception as e:
+            flash('Veillez vérifier votre connexion et reéssayez !')
+
 
 @bp.route('/logout')
 def logout():
-    session.clear()
+    try:
+        session.clear()
+        return redirect(url_for('index'))
+    except:
+        flash('Veillez vérifier votre connexion et reéssayez !')
     return redirect(url_for('index'))
-
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
