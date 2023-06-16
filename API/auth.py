@@ -132,7 +132,17 @@ def load_logged_in_user():
         try:
             db = get_db()
             exc = db.cursor(cursor_factory=DictCursor)
-            exc.execute('SELECT * FROM "users" WHERE token = %s', (user_token,))
+            exc.execute("""SELECT 
+                            username, 
+                            useremail, 
+                            u.password, 
+                            is_admin,
+                            temp_hum, volt_int, 
+                            smoke FROM users u 
+                            INNER JOIN allow_to l 
+                                ON l.token = u.token 
+                            WHERE u.token = %s""", 
+                        (user_token,))
             g.user = exc.fetchone()
         except Exception as e:
             flash('Veillez vérifier votre connexion et reéssayez !')

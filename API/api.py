@@ -12,14 +12,15 @@ bp = Blueprint('api', __name__)
 @bp.route('/')
 def index():
     # check if user is login and if he is admin
+
     if g.user is None or not g.user['is_admin']:
+        pass
+    elif g.user and not g.user['is_admin']:
         pass
     else:
         try:
-            db = get_db()
-            exc = db.cursor(cursor_factory=DictCursor)
             tokens = findToken()
-            return render_template('blog/index.html', tokens=tokens, exc=exc)
+            return render_template('blog/index.html', tokens=tokens)
         except: 
             flash('Veillez vérifier votre connexion et rafraichissez la page !')
     return render_template('blog/index.html')

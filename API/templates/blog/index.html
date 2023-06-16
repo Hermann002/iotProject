@@ -3,13 +3,13 @@
 {% block header %}
   <h1>{% block title %}IoT{% endblock %}</h1>
   {% if g.user['is_admin'] %}
-    {% for toke in tokens %}
-      <a class="action" href="/analytics/{{toke}}">Graph utilisateur </a>
+    {% for key, value in tokens.items() %}
+      <a class="action" href="/analytics/{{value}}"> {{ key }} </a>
     {% endfor %}
   {% endif %}
 {% endblock %}
 
-<!-- {% block content %}
+ {% block content %}
   {% for post in posts %}
     <article class="post">
       <header>
@@ -27,4 +27,4 @@
       <hr>
     {% endif %}
   {% endfor %}
-{% endblock %} -->
+{% endblock %}

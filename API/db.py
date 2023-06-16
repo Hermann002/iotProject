@@ -56,8 +56,6 @@ def findPermission(token):
 from pymongo.mongo_client import MongoClient
 import certifi
 import pandas as pd
-import psycopg2
-from psycopg2.extras import DictCursor
 
 def connect():
     uri = "mongodb+srv://Hermann:5e9V25ZsSHXdeZl3@cluster0.zjliq0a.mongodb.net/?retryWrites=true&w=majority"
@@ -93,25 +91,11 @@ def findData(token):
     return result
 
 def findToken():
-    client = connect()
-    mydb = client["iot_database"]
-    mycol = mydb["capteur"]
-
-    result = []
-    tokens = [""]
-
-    for x in mycol.find({},{"_id":0,"temperature":1, "humidity":1, "created":1, "token":1 }):
-        result.append(x)
-    results = pd.DataFrame(result)
-
-    # create a list that contain all tokens of users
-    i = 0
-    for x in results['token']:
-        if x == tokens[i]:
-            continue
-        else:
-            tokens.append(x)
-        i = i + 1
-    tokens.remove('')
-    
+    db = get_db()
+    exc = db.cursor(cursor_factory=DictCursor)
+    exc.execute('SELECT username, token FROM "users"')
+    results = exc.fetchall()
+    tokens = pd.DataFrame(results).set_index(0)[1].to_dict()
     return tokens
+
+# def highValue():
