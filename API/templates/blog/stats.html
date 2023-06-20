@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}<h1>Stats</h1>{% endblock %}
+  <form id="refresh_form" action="{{ url_for('api.refresh') }}" method="POST">
+    <input class = "btn" type="submit" value="Refresh">
+  </form>
+{% endblock %}
+
+
+{% block content %}
+<div class="cubes">Valeurs moyennes
+    <div class="item">
+    {% if g.user['temp_hum'] %}
+        <div class="cube">temperature moyenne {{ medium['temp'] }} </div>
+    {% endif %}
+    {% if g.user['volt_int'] %}
+        <div class="cube">tension moyenne {{ medium['volt'] }} </div>
+    {% endif %}
+    {% if g.user['smoke'] %}
+        <div class="cube">Quantité de fumée en moyenne {{ medium['smoke'] }} </div>
+    {% endif %}
+    </div>
+    mediane
+    <div class="item">
+    {% if g.user['temp_hum'] %}
+        <div class="cube">temperature mediane {{ median['temp'] }} </div>
+    {% endif %}
+    {% if g.user['volt_int'] %}
+        <div class="cube">tension mediane {{ median['volt'] }} </div>
+    {% endif %}
+    {% if g.user['smoke'] %}
+        <div class="cube">Quantité de fumée mediane {{ median['smoke'] }} </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

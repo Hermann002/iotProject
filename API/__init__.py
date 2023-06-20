@@ -5,7 +5,6 @@ from dash import Dash
 import dash
 
 from dash import Dash, html, dcc
-from flask import g
 
 from .auth import login_required
 
@@ -33,7 +32,7 @@ def create_app(test_config = None):
 	
             html.Header(
                 [
-                html.A("Home", href="http://127.0.0.1:5000", className='nav-item'),
+                html.A("Home", href="http://127.0.0.1:5002/", className='nav-item'),
                     html.Nav([
                         html.Div(
                             className = "nav-items",
@@ -65,7 +64,6 @@ def create_app(test_config = None):
     from . import api
     app.register_blueprint(api.bp)
     app.add_url_rule('/', endpoint='index')
-
 
     # app.config.from_mapping(
     #     SECRET_KEY = 'dev',

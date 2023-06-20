@@ -12,11 +12,13 @@
 <body>
     <nav>
         <h1>Flaskr</h1>
+        <a href="{{ url_for('api.index') }}">Home</a>
         <ul>
             {% if g.user %}
                 <li><span> {{ g.user['username'] }} </span></li>
                 <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
                 <li><a href="/analytics/{{g.user['token']}}">Graph</a></li>
+                <li><a href="{{ url_for('api.stats') }}">Stats</a></li>
             {% else %}
                 <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                 <li><a href="{{ url_for('auth.login') }}">Login</a></li>

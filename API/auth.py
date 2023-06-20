@@ -9,7 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import uuid
 from .db import get_db
 
-"""define the classes"""
+"""define classes"""
+
 class User:
 
     def __init__(self, username, useremail, password):
@@ -87,6 +88,10 @@ def register():
                 db.close()
             except IntegrityError :
                 error  =  'already registered'
+            except Exception as e:
+                print(e)
+                error = "Veuillez vérifier votre connexion et reéssayez !"
+                return render_template('auth/register.html')
             else:
                 flash(f'mettre ce token dans le microcontroleur {user.token}')
                 return redirect(url_for("auth.login"))
@@ -107,6 +112,7 @@ def login():
             exc.execute('SELECT * FROM "users" WHERE useremail = %s', (useremail,))
             user = exc.fetchone()
         except Exception as e:
+            print(e)
             flash('Veuillez vérifier votre connexion et reessayez !')
             return render_template('auth/login.html')
         
@@ -132,20 +138,12 @@ def load_logged_in_user():
         try:
             db = get_db()
             exc = db.cursor(cursor_factory=DictCursor)
-            exc.execute("""SELECT 
-                            username, 
-                            useremail, 
-                            u.password, 
-                            is_admin,
-                            temp_hum, volt_int, 
-                            smoke FROM users u 
-                            INNER JOIN allow_to l 
-                                ON l.token = u.token 
-                            WHERE u.token = %s""", 
-                        (user_token,))
+            exc.execute('SELECT u.*, temp_hum, volt_int, smoke FROM users u INNER JOIN allow_to l ON l.token = u.token WHERE u.token = %s', (user_token,))
             g.user = exc.fetchone()
         except Exception as e:
-            flash('Veillez vérifier votre connexion et reéssayez !')
+            print(e)
+            message = flash('Veuillez vérifier votre connexion et reessayez !')
+            return redirect(url_for('auth.login'), message)
 
 
 @bp.route('/logout')
@@ -156,6 +154,7 @@ def logout():
     except:
         flash('Veillez vérifier votre connexion et reéssayez !')
     return redirect(url_for('index'))
+
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):

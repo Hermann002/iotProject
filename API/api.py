@@ -1,22 +1,28 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify
+    Blueprint, flash, g, redirect, render_template, request, url_for, jsonify, current_app, session
 )
 from werkzeug.exceptions import abort
-from psycopg2.extras import DictCursor
-from .auth import login_required
-from .db import get_db, insertDB, findToken
+from .db import insertDB, findToken, Stats
 import datetime
 
 bp = Blueprint('api', __name__)
 
+@bp.before_app_request
+def fonction_a_executer():
+    user_token = session.get('user_token')
+    global results
+    if not current_app.config.get('fonction_executée') and user_token:
+        results = Stats(user_token)
+        print("La fonction s'exécute une seule fois.")
+        current_app.config['fonction_executée'] = True
+
 @bp.route('/')
 def index():
     # check if user is login and if he is admin
-
-    if g.user is None or not g.user['is_admin']:
-        pass
-    elif g.user and not g.user['is_admin']:
-        pass
+    if g.user is None:
+        print('guser')
+    elif not g.user['is_admin']:
+        """moyennes"""
     else:
         try:
             tokens = findToken()
@@ -25,24 +31,65 @@ def index():
             flash('Veillez vérifier votre connexion et rafraichissez la page !')
     return render_template('blog/index.html')
 
-        
-        
+@bp.route('/stats/')
+def stats():
+    medium = {}
+    median = {}
+    mode = {}
+    ecart = {}
+    variance = {}
+
+    if g.user['temp_hum']:
+
+        moy_temp = results['medium']['temperature']
+        moy_hum = results['medium']['humidity']
+        medium['temp'] = moy_temp
+        medium['hum'] = moy_hum
+
+        med_temp = results['median']['temperature']
+        med_hum = results['median']['humidity']
+        median['temp'] = med_temp
+        median['hum'] = med_hum
+
+    if g.user['volt_int']:
+        moy_volt = results['medium']['temperature']
+        medium['volt'] = moy_volt
+
+        med_temp = results['median']['temperature']
+        median['temp'] = med_temp
+    if g.user['smoke']:
+        moy_smoke = results['medium']['humidity']
+        medium['smoke'] = moy_smoke
+
+        med_smoke = results['median']['humidity']
+        median['smoke'] = med_smoke
+    return render_template('blog/stats.html', medium=medium, median=median)
+
+@bp.route('/refresh/', methods=['GET', 'POST'])
+def refresh():
+    if request.method == 'POST':
+        current_app.config['fonction_executée'] = False
+    return redirect(url_for('api.stats'))
 
 @bp.route('/add_message/', methods=['GET', 'POST'])
 def add_message():
-    content = request.json
+    if request.method == 'POST':
+        content = request.json
 
-    #add field that content the date when data fetch
-    content['created'] = datetime.datetime.now()
-    print(content)
+        #add field that content the date when data fetch
+        content['created'] = datetime.datetime.now()
+        print(content)
 
-    # insert in the mongo database
-    try:
-        insertDB(content)
-    except Exception as e:
-        pass
+        # insert in the mongo database
+        try:
+            insertDB(content)
+        except Exception as e:
+            pass
 
-    return jsonify({'response': 200})
+        return jsonify({'response': 200})
+    
+    else:
+        return 'POST request is required'
     
 # @bp.route('/create', methods=('GET', 'POST'))
 # @login_required
