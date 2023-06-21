@@ -134,10 +134,20 @@ input[type=submit]{
 
 #refresh_form{
     margin: 0;
+    padding-bottom: 0;
 }
 
 .btn{
-    margin-bottom: 0;
+    margin-bottom: 5px !important;
+    border: none;
+    background-color:  rgb(255, 190, 190);
+    border-radius: 3px;
+    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #595959;
 }
 
 .cubes{
@@ -147,11 +157,22 @@ input[type=submit]{
 
 .item{
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .cube{
     color: rgb(86, 86, 86);
     padding: 10px;
-    margin: auto;
+    padding-top: 5px;
+    margin: 5px;
+    border-radius: 5px;
     box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    height: auto;
+    width: 25%;
+    text-align: center;
+}
+
+h2{
+    text-align: center;
 }

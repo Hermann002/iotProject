@@ -1,37 +1,46 @@
 {% extends 'base.html' %}
-
+{% block title %}Stats{% endblock %}
 {% block header %}
-  {% block title %}<h1>Stats</h1>{% endblock %}
-  <form id="refresh_form" action="{{ url_for('api.refresh') }}" method="POST">
+    <h1>Stats</h1>
+    <form id="refresh_form" action="{{ url_for('api.refresh') }}" method="POST">
     <input class = "btn" type="submit" value="Refresh">
-  </form>
+    </form>
 {% endblock %}
 
 
 {% block content %}
-<div class="cubes">Valeurs moyennes
-    <div class="item">
+<div class="cubes">
     {% if g.user['temp_hum'] %}
-        <div class="cube">temperature moyenne {{ medium['temp'] }} </div>
-    {% endif %}
-    {% if g.user['volt_int'] %}
-        <div class="cube">tension moyenne {{ medium['volt'] }} </div>
-    {% endif %}
-    {% if g.user['smoke'] %}
-        <div class="cube">Quantité de fumée en moyenne {{ medium['smoke'] }} </div>
-    {% endif %}
-    </div>
-    mediane
+    <h2>temperature <img src="https://cdn-icons-png.flaticon.com/512/1113/1113890.png" alt="thermometer" width="30px" height="auto"></h2> 
     <div class="item">
-    {% if g.user['temp_hum'] %}
-        <div class="cube">temperature mediane {{ median['temp'] }} </div>
-    {% endif %}
-    {% if g.user['volt_int'] %}
-        <div class="cube">tension mediane {{ median['volt'] }} </div>
-    {% endif %}
-    {% if g.user['smoke'] %}
-        <div class="cube">Quantité de fumée mediane {{ median['smoke'] }} </div>
-    {% endif %}
+        <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ medium['temp'] }} </span></div>
+        <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ median['temp'] }} </span></div>
+        <div class="cube"><h3>Mode</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Ecart-type</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Variance</h3><span class="val_sat"> {{median['temp']}} </span></div>
     </div>
+    {% endif %}
+    
+    {% if g.user['volt_int'] %}
+    <h2>tension <img src="https://cdn-icons-png.flaticon.com/512/1113/1113890.png" alt="voltage" width="30px" height="auto"></h2>
+    <div class="item">
+        <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ medium['volt'] }} </span></div>
+        <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ median['volt'] }} </span></div>
+        <div class="cube"><h3>Mode</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Ecart-type</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Variance</h3><span class="val_sat"> {{median['temp']}} </span></div>
+    </div>
+    {% endif %}
+
+    {% if g.user['smoke'] %}
+    <h2>Fumée <img src="https://cdn-icons-png.flaticon.com/512/7398/7398108.png" alt="voltage" width="30px" height="auto"></h2>
+    <div class="item">
+        <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ medium['smoke'] }} </span></div>
+        <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ median['smoke'] }} </span></div>
+        <div class="cube"><h3>Mode</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Ecart-type</h3><span class="val_sat">  </span></div>
+        <div class="cube"><h3>Variance</h3><span class="val_sat"> {{median['temp']}} </span></div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

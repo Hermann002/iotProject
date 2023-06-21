@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect
+from flask import Flask, redirect, url_for, current_app
 from dash import Dash
 import dash
 
@@ -32,7 +32,9 @@ def create_app(test_config = None):
 	
             html.Header(
                 [
-                html.A("Home", href="http://127.0.0.1:5002/", className='nav-item'),
+                    html.Div([
+                        html.A("Home", href="http://127.0.0.1:5000/", className='nav-item'),
+                        html.A("Stats", href="http://127.0.0.1:5000/stats/", className='nav-item')]),
                     html.Nav([
                         html.Div(
                             className = "nav-items",
