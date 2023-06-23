@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form class="form-login" method="post">
     <label for="username">Username</label>
     <input name="username" id="username" required>
     <label for="useremail">Useremail</label>
@@ -17,6 +17,6 @@
       Voltage et intensité<input type="checkbox" name="option" value="volt_int">
       Fumée<input type="checkbox" name="option" value="smoke">
     </select>
-    <input type="submit" value="Register">
+    <input class="btn-log" type="submit" value="Register">
   </form>
 {% endblock %}

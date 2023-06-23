@@ -2,8 +2,11 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for, jsonify, current_app, session
 )
 from werkzeug.exceptions import abort
-from .db import insertDB, findToken, Stats
+from .db import insertDB, findToken, Stats, get_db
 import datetime
+from psycopg2 import IntegrityError
+from psycopg2.extras import DictCursor
+import pdb
 
 bp = Blueprint('api', __name__)
 
@@ -12,7 +15,10 @@ def fonction_a_executer():
     user_token = session.get('user_token')
     global results
     if not current_app.config.get('fonction_executée') and user_token:
-        results = Stats(user_token)
+        try:
+            results = Stats(user_token)
+        except:
+            print("error")
         print("La fonction s'exécute une seule fois.")
         current_app.config['fonction_executée'] = True
 
@@ -33,43 +39,82 @@ def index():
 
 @bp.route('/stats/')
 def stats():
-    medium = {}
-    median = {}
-    mode = {}
-    ecart = {}
-    variance = {}
-
-    if g.user['temp_hum']:
-
-        moy_temp = results['medium']['temperature']
-        moy_hum = results['medium']['humidity']
-        medium['temp'] = moy_temp
-        medium['hum'] = moy_hum
-
-        med_temp = results['median']['temperature']
-        med_hum = results['median']['humidity']
-        median['temp'] = med_temp
-        median['hum'] = med_hum
-
-    if g.user['volt_int']:
-        moy_volt = results['medium']['temperature']
-        medium['volt'] = moy_volt
-
-        med_temp = results['median']['temperature']
-        median['temp'] = med_temp
-    if g.user['smoke']:
-        moy_smoke = results['medium']['humidity']
-        medium['smoke'] = moy_smoke
-
-        med_smoke = results['median']['humidity']
-        median['smoke'] = med_smoke
-    return render_template('blog/stats.html', medium=medium, median=median)
+    
+    return render_template('blog/stats.html', results = results)
 
 @bp.route('/refresh/', methods=['GET', 'POST'])
 def refresh():
     if request.method == 'POST':
         current_app.config['fonction_executée'] = False
     return redirect(url_for('api.stats'))
+
+@bp.route('/settings/', methods = ['GET', 'POST'])
+def settings():
+    if request.method == 'POST':
+        token_int = g.user['token']
+        token = str(token_int)
+        
+        try:
+            db = get_db()
+            exc = db.cursor(cursor_factory=DictCursor)
+            exc.execute(
+                'SELECT * FROM max_values WHERE token = %s', (token,)
+            )
+            user = exc.fetchone()
+        except Exception as e:
+            print(e)
+        
+        temp_max = user['temp_max']
+        hum_max = user['hum_max']
+        volt_max = user['volt_max']
+        int_max = user['int_max']
+        smoke_max = user['smoke_max']
+
+        if g.user['temp_hum']:
+            temp_max = request.form['temp_max']
+        if g.user['volt_int']:
+            volt_max = request.form['volt_max']
+        if g.user['smoke']:
+            smoke_max = request.form['smoke_max']
+        error = None
+        print(temp_max)
+        print(token)
+
+        if user is None:
+            try:
+                db = get_db()
+                exc = db.cursor()
+                exc.execute(
+                            'INSERT INTO max_values (temp_max, hum_max, volt_max, int_max, smoke_max, token) VALUES (%s, %s, %s, %s, %s, %s)',
+                            (temp_max, hum_max, volt_max, int_max, smoke_max, token,)
+                            )
+                db.commit()
+                db.close()
+                flash('insert success !')
+                return redirect(url_for('api.index'))
+            except: 
+                print(e)
+                error = 'Something went wrong !'
+                flash(error)
+                return render_template('blog/settings.html')
+        
+        else:
+            try:
+                db = get_db()
+                exc = db.cursor()
+                exc.execute(
+                            "UPDATE max_values u SET temp_max = %s, hum_max = %s, volt_max = %s, int_max = %s, smoke_max = %s WHERE u.token = %s",
+                            (temp_max, hum_max, volt_max, int_max, smoke_max, token,)
+                            )
+                db.commit()
+                db.close()
+                flash('update success !')
+                return redirect(url_for('api.index'))
+            except Exception as e:
+                print(e)
+                error = 'Something went wrong !'
+                flash(error)
+                return render_template('blog/settings.html')       
 
 @bp.route('/add_message/', methods=['GET', 'POST'])
 def add_message():

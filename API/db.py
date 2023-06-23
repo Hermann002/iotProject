@@ -2,7 +2,7 @@ import psycopg2
 import sqlite3
 from psycopg2.extras import DictCursor
 import click
-from flask import current_app, g, flash
+from flask import current_app, g
 
 def get_db():
     if 'db' not in g:
@@ -29,7 +29,6 @@ def get_db():
             user='postgres',
             password='root', 
             )
-
     return g.db
 
 def close_db(e=None):
@@ -119,6 +118,11 @@ def Stats(token):
     result = client.find(myQuery, {"_id":0, "token":0}).sort("created")
     df = pd.DataFrame(result)
     df = df.drop(columns=['created'])
+
+    recent = {}
+    for colonne in df.columns:
+        recent[colonne] = df[colonne].iloc[-1]
+
     medium = df.mean()
     median = df.median()
     mode = df.mode()
@@ -130,6 +134,7 @@ def Stats(token):
     results['mode'] = mode
     results['ecart'] = ecart
     results['variance'] = variance
+    results['recent'] = recent
 
     return results
 
@@ -141,6 +146,8 @@ def essai():
 
     result = client.find(myQuery, {"_id":0, "token":0}).sort("created")
     df = pd.DataFrame(result)
-    median = df.mean()
+    recent = {}
+    for colonne in df.columns:
+        recent[colonne] = df[colonne].iloc[-1]
+    return recent
 
-    return median

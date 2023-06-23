@@ -6,6 +6,8 @@
     {% for key, value in tokens.items() %}
       <a class="action" href="/analytics/{{value}}"> {{ key }} </a>
     {% endfor %}
+  {% elif g.user %}
+    <a class="action" href="{{url_for('api.settings')}}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt="">Paramètres</a>
   {% endif %}
 {% endblock %}
 

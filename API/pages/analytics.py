@@ -19,61 +19,65 @@ def layout(token=None):
     df = pd.DataFrame(findData(token))
 
     permission = findPermission(token)
-
+    try:
     # App layout
-    lay = html.Div([
-        html.Div([
-            html.H2('My First App with Data, Graph, and Controls', className="text")
-        ]),
+        lay = html.Div([
+            html.Div([
+                html.H2('My First App with Data, Graph, and Controls', className="text")
+            ]),
 
-        # html.Button('refresh', id='refresh'),
+            # html.Button('refresh', id='refresh'),
 
-        html.Div(className="blocks",
-                 children=[
-                        html.Div(
-                                    [
-                                        dash_table.DataTable(data = df.to_dict('records'), page_size=13, style_table={'overflowX': 'auto'},  id='table')
-                                    ], className='tab'
-                                ),
+            html.Div(className="blocks",
+                    children=[
+                            html.Div(
+                                        [
+                                            dash_table.DataTable(data = df.to_dict('records'), page_size=13, style_table={'overflowX': 'auto'},  id='table')
+                                        ], className='tab'
+                                    ),
 
-                        html.Div(
-                                className = "analytics",
-                                children = [
-                                                html.Div([
-                                                    dcc.Graph(figure=px.line(df, x='created', y=['humidity', 'temperature']), className='my-first-graph-final',  id='graph')
-                                                        ], className='grh'),
-                                            ]
-                                ) if permission['temp_hum'] == True else None,
-
-        # module voltage et current
-                        html.Div(
-                                className = "analytics",
-                                children = [
-                                                html.Div([
-                                                    dcc.Graph(figure=px.line(df, x='created', y='temperature'), className='my-first-graph-final',  id='graph')
-                                                        ], className='grh'),
-                                            ]
-                                ) if permission['volt_int'] == True else None,
-
-        # module smoke
-
-                        html.Div(
-                                className = "analytics",
-                                children = [
-                                                html.Div([
-                                                    dcc.Graph(figure=px.line(df, x='created', y='humidity'), className='my-first-graph-final',  id='graph')
-                                                        ], className='grh'),
-                                            ]
-                                ) if permission['smoke'] == True else None
-                                ]),
-        # accès à la température et l'humidité
-        
-
-    ],className="new-page")
+                            html.Div(
+                                    className = "analytics",
+                                    children = [
+                                                    html.Div([
+                                                        dcc.Graph(figure=px.line(df, x='created', y=['humidity', 'temperature']), className='my-first-graph-final',  id='graph')
+                                                            ], className='grh'),
+                                                ]
+                                    ) if permission['temp_hum'] == True else None,
 
 
+            # module voltage et current
+                            html.Div(
+                                    className = "analytics",
+                                    children = [
+                                                    html.Div([
+                                                        dcc.Graph(figure=px.line(df, x='created', y='temperature'), className='my-first-graph-final',  id='graph')
+                                                            ], className='grh'),
+                                                ]
+                                    ) if permission['volt_int'] == True else None,
+
+            # module smoke
+
+                            html.Div(
+                                    className = "analytics",
+                                    children = [
+                                                    html.Div([
+                                                        dcc.Graph(figure=px.line(df, x='created', y='humidity'), className='my-first-graph-final',  id='graph')
+                                                            ], className='grh'),
+                                                ]
+                                    ) if permission['smoke'] == True else None
+                                    ]),
+            # accès à la température et l'humidité
+            
+
+        ],className="new-page")
+
+        return lay
+
+    except:
+        return html.H2('Rien à Afficher pour l\'instant !', className="text")
     
-    return lay
+   
 
 # @callback(
 #     Output(component_id = 'table', component_property = 'data'),

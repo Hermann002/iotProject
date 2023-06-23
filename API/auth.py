@@ -9,6 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import uuid
 from .db import get_db
 
+import pdb
+
 """define classes"""
 
 class User:
@@ -76,12 +78,12 @@ def register():
 
                 exc.execute(
                     'INSERT INTO "users" (username, useremail, password, token) VALUES (%s, %s, %s, %s)',
-                    (user.username, user.useremail, generate_password_hash(user.password), user.token),
+                    (user.username, user.useremail, generate_password_hash(user.password), user.token,)
                     )
 
                 exc.execute(
                     'INSERT INTO "allow_to" (temp_hum, volt_int, smoke, token) VALUES (%s, %s, %s, %s)',
-                    (allow_to.temp_hum, allow_to.volt_int, allow_to.smoke, user.token)
+                    (allow_to.temp_hum, allow_to.volt_int, allow_to.smoke, user.token,)
                     )
                 
                 db.commit()

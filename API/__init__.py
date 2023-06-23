@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect, url_for, current_app
+from flask import Flask, redirect
 from dash import Dash
 import dash
 
@@ -33,8 +33,8 @@ def create_app(test_config = None):
             html.Header(
                 [
                     html.Div([
-                        html.A("Home", href="http://127.0.0.1:5000/", className='nav-item'),
-                        html.A("Stats", href="http://127.0.0.1:5000/stats/", className='nav-item')]),
+                        html.A("Home", href=" http://192.168.100.19:5000", className='nav-item'),
+                        html.A("Stats", href=" http://192.168.100.19:5000/stats/", className='nav-item')]),
                     html.Nav([
                         html.Div(
                             className = "nav-items",
@@ -88,6 +88,7 @@ def create_app(test_config = None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
     
     # a simple page that says hello 
     @app.route('/hello')

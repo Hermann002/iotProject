@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}IoT{% endblock %}</h1>
+  {% if not g.user['is_admin'] %}
+    <a class="action" href="{{ url_for('api.index') }}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt=""> Back </a>
+  {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    <form class="form-settings" action="{{url_for('api.settings')}}" method="post">
+        {% if g.user['temp_hum'] %}
+            <label for="temp">Entrer temperature max :
+                <input type="number" name="temp_max" id="temp" required>
+            </label>
+        {% endif %}
+        {% if g.user['volt_int'] %}
+            <label for="volt">Entrer tension max :
+                <input type="number" name="volt_max" id="volt" required>
+            </label>
+        {% endif %}
+        {% if g.user['smoke'] %}
+            <label for="smoke">Entrer Fumée max :
+                <input type="number" name="smoke_max" id="smoke" required>
+            </label>
+        {% endif %}
+        <input type="submit" value="Soumettre">
+    </form>
+{% endblock %}
