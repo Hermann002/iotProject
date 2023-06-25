@@ -150,6 +150,7 @@ input[type=submit]{
 .cubes{
     display: flex;
     flex-direction: column;
+    width: 70%;
 }
 
 .item{
@@ -252,6 +253,22 @@ footer > h1{
     font-size: 14px;
     font-weight: bold;
     color: #2f2f2f;
+}
+
+.stat-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.signification{
+    width: 300px;
+    max-width: 400px;
+    background-color: #6c6c6c;
+    padding: 10px;
+}
+
+.signification h3{
+    color: aliceblue;
 }
 
 /* .jauge {
