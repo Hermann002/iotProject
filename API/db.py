@@ -70,11 +70,11 @@ import pandas as pd
 
 def connect():
 
-    #uri = "mongodb+srv://Hermann:5e9V25ZsSHXdeZl3@cluster0.zjliq0a.mongodb.net/?retryWrites=true&w=majority"
-    uri = "mongodb://localhost:27017/"
+    uri = "mongodb+srv://Hermann:5e9V25ZsSHXdeZl3@cluster0.zjliq0a.mongodb.net/?retryWrites=true&w=majority"
+    # uri = "mongodb://localhost:27017/"
     # Create a new client and connect to the server
     
-    client = MongoClient(uri) #tlsCAFile = certifi.where())
+    client = MongoClient(uri, tlsCAFile = certifi.where())
     mydb = client["iot_database"]
     mycol = mydb["capteur"]
 
@@ -150,4 +150,3 @@ def essai():
     for colonne in df.columns:
         recent[colonne] = df[colonne].iloc[-1]
     return recent
-

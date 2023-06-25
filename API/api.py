@@ -4,7 +4,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from .db import insertDB, findToken, Stats, get_db
 import datetime
-from psycopg2 import IntegrityError
+
 from psycopg2.extras import DictCursor
 import pdb
 
@@ -13,14 +13,17 @@ bp = Blueprint('api', __name__)
 @bp.before_app_request
 def fonction_a_executer():
     user_token = session.get('user_token')
+    print(user_token)
     global results
-    if not current_app.config.get('fonction_executée') and user_token:
+    if not current_app.config.get('fonction_execute') and user_token:
         try:
             results = Stats(user_token)
-        except:
-            print("error")
-        print("La fonction s'exécute une seule fois.")
-        current_app.config['fonction_executée'] = True
+            current_app.config['fonction_execute'] = True
+            print("La fonction s'exécute une seule fois.")
+        except Exception as e:
+            print(e)
+            results = {}
+        
 
 @bp.route('/')
 def index():
@@ -45,7 +48,7 @@ def stats():
 @bp.route('/refresh/', methods=['GET', 'POST'])
 def refresh():
     if request.method == 'POST':
-        current_app.config['fonction_executée'] = False
+        current_app.config['fonction_execute'] = False
     return redirect(url_for('api.stats'))
 
 @bp.route('/settings/', methods = ['GET', 'POST'])
@@ -61,14 +64,20 @@ def settings():
                 'SELECT * FROM max_values WHERE token = %s', (token,)
             )
             user = exc.fetchone()
+
+            temp_max = user['temp_max']
+            hum_max = user['hum_max']
+            volt_max = user['volt_max']
+            int_max = user['int_max']
+            smoke_max = user['smoke_max']
         except Exception as e:
+            temp_max = 0
+            hum_max = 0
+            volt_max = 0
+            int_max = 0
+            smoke_max = 0
             print(e)
         
-        temp_max = user['temp_max']
-        hum_max = user['hum_max']
-        volt_max = user['volt_max']
-        int_max = user['int_max']
-        smoke_max = user['smoke_max']
 
         if g.user['temp_hum']:
             temp_max = request.form['temp_max']
@@ -95,8 +104,6 @@ def settings():
             except: 
                 print(e)
                 error = 'Something went wrong !'
-                flash(error)
-                return render_template('blog/settings.html')
         
         else:
             try:
@@ -113,8 +120,8 @@ def settings():
             except Exception as e:
                 print(e)
                 error = 'Something went wrong !'
-                flash(error)
-                return render_template('blog/settings.html')       
+        flash(error)
+    return render_template('blog/settings.html')       
 
 @bp.route('/add_message/', methods=['GET', 'POST'])
 def add_message():

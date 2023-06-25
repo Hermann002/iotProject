@@ -1,25 +1,31 @@
 html{
     font-family: 'Hind Madurai', sans-serif;
     background: #fff;
-    padding: 1rem; 
+    /*padding: 1rem; */
 }
 body{
-    max-width: 960px;
+    /*max-width: 960px;*/
     margin: 0 auto; 
     background: white; 
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    /*box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 10px 0px, rgba(255, 255, 255, 0.8) -6px -2px 10px 0px;*/
     border-radius: 5px;
 }
 
 h1{ 
     font-family: "Audiowide", sans-serif !important; 
-    color: rgb(247, 113, 113); 
+    color: rgb(197, 238, 108); 
     font-weight: lighter;
     margin: 1rem 0; 
+    font-size: 40px;
 }
 
 a{ 
-    color: #377ba8; 
+    color: rgb(197, 238, 108);  
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
 }
 
 hr{ 
@@ -28,11 +34,11 @@ hr{
 }
 
 nav{ 
-    background: lightgray; 
+    background: rgb(181, 181, 181); 
     display: flex; 
     align-items: center; 
-    padding: 0 0.5rem; 
-    border-radius: 5px 5px 0 0;
+    padding: 0 1.5rem; 
+    height: 78px;
 }
 
 nav h1{ 
@@ -56,7 +62,7 @@ nav ul li a, nav ul li span, header{
     padding: 0.5rem; 
 }
 .content{ 
-    padding: 0 1rem 1rem; 
+    padding: 0 1.5rem; 
 }
 
 .content > header{ 
@@ -77,37 +83,20 @@ nav ul li a, nav ul li span, header{
     border: 1px solid #a83737; 
 }
 
-.post > header { 
-    display: flex; 
-    align-items: flex-end; 
-    font-size: 0.85em; 
-}
-.post > header > div:first-of-type{ 
-    flex: auto; 
-}
-
-.post > header h1{
-    font-size: 1.5em; 
-    margin-bottom: 0; 
-}
-
-.post .about{ 
-    color: slategray; 
-    font-style: italic; 
-}
-
-.post .body{
-    white-space: pre-line; 
-}
-
 .content:last-child{
     margin-bottom: 0; 
 }
 
 .content .form-login{ 
-    margin: 1em 0; 
+    margin: 1em auto; 
+    max-width: 500px;
+    height: auto;
     display: flex; 
     flex-direction: column; 
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.5s;
+    box-shadow: rgba(136, 165, 191, 0.48) 2px 2px 10px 0px, rgba(255, 255, 255, 0.8) -2px -2px 10px 0px;
 }
 
 .content label{ 
@@ -143,14 +132,19 @@ input[type=submit]{
 .btn{
     margin-bottom: 5px !important;
     border: none;
-    background-color:  rgb(255, 190, 190);
+    background-color:  rgb(197, 238, 108); 
     border-radius: 3px;
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    box-shadow: rgba(136, 165, 191, 0.48) 2px 2px 10px 0px, rgba(255, 255, 255, 0.8) -2px -2px 10px 0px;
     cursor: pointer;
     padding: 5px;
     font-size: 14px;
     font-weight: bold;
-    color: #595959;
+    color: #2f2f2f;
+    transition: all 0.3s ease;
+}
+
+.btn:hover{
+    transform: scale(0.9);
 }
 
 .cubes{
@@ -170,7 +164,7 @@ input[type=submit]{
     padding-top: 5px;
     margin: 5px;
     border-radius: 5px;
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    box-shadow: rgba(136, 165, 191, 0.48) 2px 2px 10px 0px, rgba(255, 255, 255, 0.8) -2px -2px 10px 0px;
     height: auto;
     width: 25%;
     text-align: center;
@@ -178,6 +172,7 @@ input[type=submit]{
 
 h2{
     text-align: center;
+    color: rgb(197, 238, 108); 
 }
 
 .action{
@@ -195,10 +190,11 @@ h2{
     flex-direction: column;
     align-items: flex-start;
     margin: 8px auto;
-    width: 50%;
+    min-width: 30%;
+    max-width: 400px;
     height: auto;
     border-radius: 5px;
-    box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+    box-shadow: rgba(136, 165, 191, 0.48) 2px 2px 10px 0px, rgba(255, 255, 255, 0.8) -2px -2px 10px 0px;
     padding: 10px;
     transition: 0.5s;
 }
@@ -212,3 +208,80 @@ h2{
 .form-settings input[type='submit']{
     align-self: flex-end;
 }
+
+footer{
+    /* position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0; */
+    background-color: #363636;
+    align-self: flex-end;
+    height: 200px;
+}
+footer > h1{
+    color: aliceblue;
+    padding: 10px 1.5rem;
+}
+
+.home-element{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+
+.home-title{
+    font-size: 50px;
+    max-width: 700px;
+    color: #4b4b4b;
+}
+.home-text{
+    max-width: 660px;
+    color: #4b4b4b;
+}
+
+#btn-setting{
+    margin-bottom: 5px !important;
+    border: none;
+    background-color:  rgb(197, 238, 108); 
+    border-radius: 3px;
+    box-shadow: rgba(136, 165, 191, 0.48) 2px 2px 10px 0px, rgba(255, 255, 255, 0.8) -2px -2px 10px 0px;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #2f2f2f;
+}
+
+/* .jauge {
+    width: 200px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .barre {
+    height: 100%;
+    width: 0;
+    background-color: green;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+  
+  .valeur {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .jauge.error .barre {
+    background-color: red;
+  }
+  
+  .jauge.warning .barre {
+    background-color: orange;
+  } */
+  

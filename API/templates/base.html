@@ -11,7 +11,7 @@
 </head>
 <body>
     <nav>
-        <h1>Flaskr</h1>
+        <h1>DIGI-IoT</h1>
         <a href="{{ url_for('api.index') }}">Home</a>
         <ul>
             {% if g.user %}
@@ -28,11 +28,14 @@
     <section class="content">
         <header>
             {% block header %} {% endblock %}
-        </header>
+        </header> 
         {% for message in get_flashed_messages() %}
             <div class="flash"> {{ message }} </div>
         {% endfor %}
         {% block content %} {% endblock %}
     </section>
+    <footer>
+        <h1>DIGI-IoT</h1>
+    </footer>
 </body>
 </html>

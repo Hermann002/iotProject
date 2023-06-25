@@ -33,8 +33,8 @@ def create_app(test_config = None):
             html.Header(
                 [
                     html.Div([
-                        html.A("Home", href=" http://192.168.100.19:5000", className='nav-item'),
-                        html.A("Stats", href=" http://192.168.100.19:5000/stats/", className='nav-item')]),
+                        html.A("Home", href=" http://127.0.0.1:5000", className='nav-item'),
+                        html.A("Stats", href=" http://127.0.0.1:5000/stats/", className='nav-item')]),
                     html.Nav([
                         html.Div(
                             className = "nav-items",
