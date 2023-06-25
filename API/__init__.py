@@ -29,7 +29,7 @@ def create_app(test_config = None):
 
         # Set the layout
         app.layout = html.Div([
-	
+            # html.Link(rel='icon', type='image/x-icon', href='https://cdn-icons-png.flaticon.com/512/6080/6080697.png'),
             html.Header(
                 [
                     html.Div([
