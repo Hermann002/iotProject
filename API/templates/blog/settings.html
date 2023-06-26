@@ -1,30 +1,35 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}IoT{% endblock %}</h1>
+  <h1 class="title-page" >{% block title %}IoT{% endblock %}</h1>
   {% if not g.user['is_admin'] %}
-    <a class="action" href="{{ url_for('api.index') }}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt=""> Back </a>
+    <a class="action action-settings" href="{{ url_for('api.index') }}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt=""> Back </a>
   {% endif %}
 {% endblock %}
 
 
 {% block content %}
     <form class="form-settings" action="{{url_for('api.settings')}}" method="post">
+        <h3 style="margin: 0 auto 15px; color: rgb(108, 221, 238);">Définition des valeurs max</h3>
         {% if g.user['temp_hum'] %}
-            <label for="temp">Entrer temperature max :
+            <label for="temp">Entrer temperature max
                 <input type="number" name="temp_max" id="temp" required>
             </label>
         {% endif %}
         {% if g.user['volt_int'] %}
-            <label for="volt">Entrer tension max :
+            <label for="volt">Entrer tension max
                 <input type="number" name="volt_max" id="volt" required>
             </label>
         {% endif %}
         {% if g.user['smoke'] %}
-            <label for="smoke">Entrer Fumée max :
+            <label for="smoke">Entrer Fumée max
                 <input type="number" name="smoke_max" id="smoke" required>
             </label>
         {% endif %}
+            <label for="laps-time">Date dernière maintenance
+                <input type="date" id="laps-time" name="date" required>
+            </label>
         <input id="btn-setting" type="submit" value="Soumettre">
+        <p class="nb"><u>NB:</u> La <b>Date dernière maintenance</b> indique la dernière date à laquelle l'appareil a subit ses dernières réparations et fut mise en bon état de marche. Si la dernière date de maintenance n'a pas été effectuée avec succès, entrez la précédente. Vous pouvez également mettre une date aléatoire pour voir l'état depuis cette date là.</p>
     </form>
 {% endblock %}

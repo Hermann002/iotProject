@@ -4,6 +4,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from .db import insertDB, findToken, Stats, get_db
 import datetime
+from markupsafe import escape
 
 from psycopg2.extras import DictCursor
 import pdb
@@ -13,37 +14,46 @@ bp = Blueprint('api', __name__)
 @bp.before_app_request
 def fonction_a_executer():
     user_token = session.get('user_token')
-    print(user_token)
     global results
+    global maximum
     if not current_app.config.get('fonction_execute') and user_token:
         try:
-            results = Stats(user_token)
+            db = get_db()
+            exc = db.cursor(cursor_factory=DictCursor)
+            exc.execute(
+                'SELECT * FROM max_values WHERE token = %s', (user_token,)
+                        )
+            maximum = exc.fetchone()
+            results = Stats(user_token, maximum['date_main'])
+            print(results)
             current_app.config['fonction_execute'] = True
             print("La fonction s'exécute une seule fois.")
         except Exception as e:
             print(e)
-            results = {}
         
 
 @bp.route('/')
 def index():
     # check if user is login and if he is admin
     if g.user is None:
-        print('guser')
+        pass
     elif not g.user['is_admin']:
-        """moyennes"""
+        pass
     else:
         try:
             tokens = findToken()
             return render_template('blog/index.html', tokens=tokens)
         except: 
             flash('Veillez vérifier votre connexion et rafraichissez la page !')
+            return render_template('blog/index.html')
     return render_template('blog/index.html')
 
 @bp.route('/stats/')
 def stats():
     
     return render_template('blog/stats.html', results = results)
+
+
 
 @bp.route('/refresh/', methods=['GET', 'POST'])
 def refresh():
@@ -56,6 +66,11 @@ def settings():
     if request.method == 'POST':
         token_int = g.user['token']
         token = str(token_int)
+        date_main = request.form['date']
+        if date_main >= datetime.datetime.now():
+            error = 'veillez entrer une date inférieure à la date actuelle !'
+            flash(error)
+            return render_template('blog/settings.html')
         
         try:
             db = get_db()
@@ -80,22 +95,20 @@ def settings():
         
 
         if g.user['temp_hum']:
-            temp_max = request.form['temp_max']
+            temp_max = escape(request.form['temp_max'])
         if g.user['volt_int']:
-            volt_max = request.form['volt_max']
+            volt_max = escape(request.form['volt_max'])
         if g.user['smoke']:
-            smoke_max = request.form['smoke_max']
+            smoke_max = escape(request.form['smoke_max'])
         error = None
-        print(temp_max)
-        print(token)
 
         if user is None:
             try:
                 db = get_db()
                 exc = db.cursor()
                 exc.execute(
-                            'INSERT INTO max_values (temp_max, hum_max, volt_max, int_max, smoke_max, token) VALUES (%s, %s, %s, %s, %s, %s)',
-                            (temp_max, hum_max, volt_max, int_max, smoke_max, token,)
+                            'INSERT INTO max_values (temp_max, hum_max, volt_max, int_max, smoke_max, date_main, token) VALUES (%s, %s, %s, %s, %s, %s)',
+                            (temp_max, hum_max, volt_max, int_max, smoke_max, date_main, token,)
                             )
                 db.commit()
                 db.close()
@@ -110,8 +123,8 @@ def settings():
                 db = get_db()
                 exc = db.cursor()
                 exc.execute(
-                            "UPDATE max_values u SET temp_max = %s, hum_max = %s, volt_max = %s, int_max = %s, smoke_max = %s WHERE u.token = %s",
-                            (temp_max, hum_max, volt_max, int_max, smoke_max, token,)
+                            "UPDATE max_values u SET temp_max = %s, hum_max = %s, volt_max = %s, int_max = %s, smoke_max = %s, date_main = %s WHERE u.token = %s",
+                            (temp_max, hum_max, volt_max, int_max, smoke_max, date_main, token,)
                             )
                 db.commit()
                 db.close()

@@ -3,6 +3,7 @@ import sqlite3
 from psycopg2.extras import DictCursor
 import click
 from flask import current_app, g
+import datetime
 
 def get_db():
     if 'db' not in g:
@@ -67,6 +68,7 @@ def findPermission(token):
 from pymongo.mongo_client import MongoClient
 import certifi
 import pandas as pd
+import pdb
 
 def connect():
 
@@ -107,10 +109,14 @@ def findToken():
     return tokens
 
 # def highValue():
-def Stats(token):
+def Stats(token, date):
     client = connect()
+    print(type(date))
     myQuery = {
-        'token' : token
+        'token' : token,
+        'created': {
+                    "$gt": date
+                }
     }
      
     results = {}

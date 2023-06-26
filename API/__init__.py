@@ -32,19 +32,13 @@ def create_app(test_config = None):
             # html.Link(rel='icon', type='image/x-icon', href='https://cdn-icons-png.flaticon.com/512/6080/6080697.png'),
             html.Header(
                 [
-                    html.Div([
-                        html.A("Home", href=" http://127.0.0.1:5000", className='nav-item'),
-                        html.A("Stats", href=" http://127.0.0.1:5000/stats/", className='nav-item')]),
+                    html.Span('Dashboard', className='title-header'),
                     html.Nav([
-                        html.Div(
-                            className = "nav-items",
-                            children = [
-                                dcc.Link("", href=page["relative_path"], className='nav-item')
-                            ])
-                            for page in dash.page_registry.values()
-                    ],className = "nav-bar"),
-                
-                    html.Span('Dashboard', className='title-header')
+                        html.A("Acceuil", href=" http://127.0.0.1:5000", className='nav-item'),
+                        html.P("Hermann", className='username nav-item'),
+                        html.A("Sortir", href=" http://127.0.0.1:5000/logout/", className='nav-item'),
+                        html.A("Graph", href="#", className='nav-item'),
+                        html.A("Stats", href=" http://127.0.0.1:5000/stats/", className='nav-item')], className="nav-bar")
                 ],className="app-header"),
             
             

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Stats{% endblock %}
 {% block header %}
-    <h1>Stats</h1>
+    <h1 class="title-page">Stats</h1>
     <form id="refresh_form" action="{{ url_for('api.refresh') }}" method="POST">
     <input class = "btn" type="submit" value="Refresh">
     </form>
@@ -12,17 +12,17 @@
 <div class="stat-content">
     <div class="signification">
         <h2>signification des valeurs statistiques</h2>
-        <h3>Moyenne</h3>
-        <h3>Mediane</h3>
-        <h3>Mode</h3>
-        <h3>Ecart-type</h3>
-        <h3>Variance</h3>
+        <h3>Moyenne</h3> <p>La moyenne est utilisée pour déterminer la tendance centrale d'un ensemble de données. Elle représente la valeur typique ou moyenne de l'ensemble des observations. Lorsqu'on analyse un échantillon, la moyenne fournit une estimation de la valeur moyenne dans la population. Cette mesure permet de comprendre le comportement général des données et peut aider à prendre des décisions basées sur une valeur de référence.</p>
+        <h3>Mediane</h3> <p>La médiane est une mesure statistique qui est utilisée pour évaluer la tendance centrale des données d'un ensemble. Contrairement à la moyenne qui est la somme de toutes les valeurs divisée par le nombre total de valeurs, la médiane est la valeur centrale dans un ensemble de données ordonnées. Cela signifie que la moitié des valeurs se situent en-dessous de la médiane et l'autre moitié au-dessus. <br> Avec cette valeur et la moyenne, nous déterminer si la distribution est asymétrique avec une concentration de valeurs élevées ou basses. </p>
+        <h3>Mode</h3> <p>Le mode est une mesure statistique utilisée pour représenter la valeur ou les valeurs les plus fréquentes dans un ensemble de données. Il représente la valeur qui apparaît le plus souvent. Contrairement à la moyenne et à la médiane qui se concentrent sur la tendance centrale, le mode met l'accent sur la fréquence des valeurs.</p>
+        <h3>Ecart-type</h3> <p>L'écart type est une mesure statistique qui quantifie la dispersion ou la variabilité des données par rapport à la moyenne. Il indique à quel point les valeurs d'un ensemble de données sont dispersées autour de la moyenne. <br>L'écart type est souvent utilisé dans la modélisation des risques pour évaluer la volatilité ou la variabilité de l'état des capteurs.</p>
+        <h3>Variance</h3> <p>La variance permet d'évaluer la dispersion des données autour de la moyenne. Une valeur de variance plus élevée indique une plus grande dispersion des données, ce qui signifie que les valeurs sont plus éloignées de la moyenne. Cela peut être utile pour comprendre la variabilité des données et prendre des décisions basées sur la répartition des valeurs.</p>
     </div>
     <div class="cubes">
         {% if g.user['temp_hum'] %}
         <h2>temperature <img src="https://cdn-icons-png.flaticon.com/512/1113/1113890.png" alt="thermometer" width="30px" height="auto"></h2> 
         <div class="item">
-            <div class="cube"><h3>Etat actuel</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }} </span></div>
+            <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }}°c </span></div>
             <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['temperature'] }} </span></div>
             <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['temperature'] }} </span></div>
             <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['temperature'])[0] }} </span></div>
@@ -34,7 +34,7 @@
         {% if g.user['volt_int'] %}
         <h2>tension <img src="https://cdn-icons-png.flaticon.com/512/813/813774.png" alt="voltage" width="30px" height="auto"></h2>
         <div class="item">
-            <div class="cube"><h3>Etat actuel</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }} </span></div>
+            <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }} V </span></div>
             <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['temperature'] }} </span></div>
             <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['temperature'] }} </span></div>
             <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['temperature'])[0] }} </span></div>
@@ -46,7 +46,7 @@
         {% if g.user['smoke'] %}
         <h2>Fumée <img src="https://cdn-icons-png.flaticon.com/512/7398/7398108.png" alt="voltage" width="30px" height="auto"></h2>
         <div class="item">
-            <div class="cube"><h3>Etat actuel</h3><span  class="val_sat valeur"> {{ results['recent']['humidity'] }} </span></div>
+            <div class="cube"><h3>valeur actuelle</h3><span  class="val_sat valeur"> {{ results['recent']['humidity'] }}% </span></div>
             <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['humidity'] }} </span></div>
             <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['humidity'] }} </span></div>
             <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['humidity'])[0] }} </span></div>

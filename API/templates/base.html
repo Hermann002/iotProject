@@ -16,7 +16,7 @@
         <a href="{{ url_for('api.index') }}">Accueil</a>
         <ul>
             {% if g.user %}
-                <li><span> {{ g.user['username'] }} </span></li>
+                <li><span class="username"> {{ g.user['username'] }} </span></li>
                 <li><a href="{{ url_for('auth.logout') }}">Sortir</a></li>
                 <li><a href="/analytics/{{g.user['token']}}">Graph</a></li>
                 <li><a href="{{ url_for('api.stats') }}">Stats</a></li>
