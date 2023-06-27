@@ -25,27 +25,72 @@ def fonction_a_executer():
                         )
             maximum = exc.fetchone()
             results = Stats(user_token, maximum['date_main'])
-            print(results)
             current_app.config['fonction_execute'] = True
+            print(current_app.config['fonction_execute'])
             print("La fonction s'exécute une seule fois.")
         except Exception as e:
             print(e)
+    elif not user_token:
+        results = {}
+        current_app.config['fonction_execute'] = False
+        print(current_app.config['fonction_execute'])
+
         
 
 @bp.route('/')
 def index():
     # check if user is login and if he is admin
-    if g.user is None:
-        pass
-    elif not g.user['is_admin']:
-        pass
-    else:
+    # pdb.set_trace()
+    if g.user and g.user['is_admin'] == False:
+        print('bonjour')
+        try:
+            danger = {}
+            imminent = {}
+            if g.user['temp_hum']:
+                permit =  maximum['temp_max'] - maximum['temp_max']*10/100
+                if maximum['temp_max'] <= results['recent']['temperature'] or maximum['temp_max'] <= results['medium']['temperature']:
+                    danger['temp'] = True
+                    imminent['temp'] = True
+                elif permit <= results['recent']['temperature'] or permit <= results['medium']['temperature']:
+                    danger['temp'] = False
+                    imminent['temp'] = False
+                else:
+                    danger['temp'] = False
+                    imminent['temp'] = False
+            if g.user['volt_int']:
+                permit =  maximum['volt_max'] - maximum['volt_max']*10/100
+                if maximum['volt_max'] <= results['recent']['temperature'] or maximum['volt_max'] <= results['medium']['temperature']:
+                    danger['volt'] = True
+                    imminent['volt'] = True
+                elif permit <= results['recent']['temperature'] or permit <= results['medium']['temperature'] :
+                    danger['volt'] = False
+                    imminent['volt'] = False
+                else:
+                    danger['volt'] = False
+                    imminent['volt'] = False
+            if g.user['smoke']:
+                permit =  maximum['smoke_max'] - maximum['smoke_max']*10/100
+                if maximum['smoke_max'] <= results['recent']['humidity'] or maximum['smoke_max'] <= results['medium']['humidity']:
+                    danger['smoke'] = True
+                    imminent['smoke'] = True
+                elif permit <= results['recent']['humidity'] or permit <= results['medium']['humidity'] :
+                    danger['smoke'] = False
+                    imminent['smoke'] = False
+                else:
+                    danger['smoke'] = False
+                    imminent['smoke'] = False
+            return render_template('blog/index.html', danger = danger, imminent = imminent)
+        except Exception as e:
+            print(e)
+    elif g.user and g.user['is_admin'] == True:
         try:
             tokens = findToken()
             return render_template('blog/index.html', tokens=tokens)
         except: 
             flash('Veillez vérifier votre connexion et rafraichissez la page !')
             return render_template('blog/index.html')
+    else:
+        pass
     return render_template('blog/index.html')
 
 @bp.route('/stats/')
@@ -155,79 +200,3 @@ def add_message():
     
     else:
         return 'POST request is required'
-    
-# @bp.route('/create', methods=('GET', 'POST'))
-# @login_required
-# def create():
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         body = request.form['body']
-#         error = None
-
-#         if not title:
-#             error = 'Title is required.'
-
-#         if error is not None:
-#             flash(error)
-#         else:
-#             db = get_db()
-#             db.execute(
-#                 'INSERT INTO post (title, body, author_id)'
-#                 ' VALUES (?, ?, ?)',
-#                 (title, body, g.user['id'])
-#             )
-#             db.commit()
-#             return redirect(url_for('blog.index'))
-
-#     return render_template('blog/create.html')
-    
-# def get_post(id, check_author=True):
-#     post = get_db().execute(
-#         'SELECT p.id, title, body, created, author_id, username'
-#         ' FROM post as p JOIN user as u ON p.author_id = u.id'
-#         ' WHERE p.id = ?',
-#         (id,)
-#     ).fetchone()
-
-#     if post is None:
-#         abort(404, f"Post id{id} doesn't exist")
-    
-#     if check_author and post['author_id'] != g.user['id']:
-#         abort(403)
-    
-#     return post
-
-# @bp.route('/<int:id>/update', methods=('GET','POST'))
-# @login_required
-# def update(id):
-#     post = get_post(id)
-
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         body = request.form['body']
-#         error = None
-
-#         if not title:
-#             error = 'Title is required.'
-
-#         if error is not None:
-#             flash(error)
-#         else:
-#             db = get_db()
-#             db.execute(
-#                 'UPDATE post SET title = ?, body = ?'
-#                 ' WHERE id = ?',
-#                 (title, body, id)
-#             )
-#             db.commit()
-#             return redirect(url_for('blog.index'))
-#     return render_template('blog/update.html', post=post)
-
-# @bp.route('/<int:id>/delete', methods=('POST',))
-# @login_required
-# def delete(id):
-#     get_post(id)
-#     db = get_db()
-#     db.execute('DELETE FROM post WHERE id = ?', (id,))
-#     db.commit()
-#     return redirect(url_for('blog.index'))

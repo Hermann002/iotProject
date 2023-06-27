@@ -295,9 +295,20 @@ footer > h1{
 
 .voyant{
     border-radius: 50%;
-    background-color: rgb(0, 255, 0);
     width: 20px;
     height: 20px;
+}
+
+.green{
+    background-color: rgb(0, 255, 0);
+}
+
+.orange{
+    background-color: orange;
+}
+
+.red{
+    background-color: red;
 }
 
 .etat-actuel{

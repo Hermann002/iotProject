@@ -1,6 +1,6 @@
-body{
-    padding: 5px auto;
-} 
+/* body{
+    
+}  */
 .title-header {
     font-size: 30px;
     color: rgb(235, 235, 235);  
@@ -14,16 +14,21 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 8px;
     align-items: center;
     background-color: rgb(8, 20, 46);
     margin: -7px;
-    height: 80px;
+    height: 65px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
 }
 
 .nav-bar{
     display: flex;
     flex-direction: row;
-    margin-right: 20px;
+    margin-right: 28px;
     align-items: center;
 }
 
@@ -56,6 +61,7 @@ body{
 
 .text{
     text-align: center;
+    margin-top: 80px;
 }
 
 .analytics{
@@ -73,7 +79,8 @@ body{
     padding: 10px -10px 10px -10px;
     border-radius: 7px;
     flex-wrap: wrap;
-    margin-left: 10px;
+    margin: 0 10px;
+    justify-content: space-around;
 }
 /* .grh{
     
