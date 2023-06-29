@@ -79,7 +79,7 @@ def index():
                 else:
                     danger['smoke'] = False
                     imminent['smoke'] = False
-            return render_template('blog/index.html', danger = danger, imminent = imminent)
+            return render_template('blog/index.html', danger = danger, imminent = imminent, results = results)
         except Exception as e:
             print(e)
     elif g.user and g.user['is_admin'] == True:

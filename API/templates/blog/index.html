@@ -13,6 +13,8 @@
 
 
 {% block content %}
+
+
 {% if g.user and not g.user['is_admin'] %}
   <div class="etat-appareil">
     <h2 class="etat-actuel">Etat actuel-
@@ -27,6 +29,39 @@
     {% endif %}
     </h2>
   </div>
+
+    
+<div class="explain">
+  {% if danger['temp'] and imminent['temp'] %}
+  <div class="explain-part">
+    <p>Les cas suivants sont possibles :</p>
+    <ul>
+      <li> La valeur moyenne de la température de votre équipement qui est {{ results['medium']['temperature'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la température de votre équipement qui est {{ results['recent']['temperature'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+    </ul>
+  </div>
+  {% endif %}
+  {% if danger['volt'] and imminent['volt'] %}
+  <div class="explain-part">
+    <p>Les cas suivants sont possibles :</p>
+    <ul>
+      <li> La valeur moyenne de la tension de votre équipement qui est {{ results['medium']['temperature'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la tension de votre équipement qui est {{ results['recent']['temperature'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+    </ul>
+  </div>
+  {% endif %}
+  {% if danger['smoke'] and imminent['smoke'] %}
+  <div class="explain-part">
+    <p>Les cas suivants sont possibles :</p>
+    <ul>
+      <li> La valeur moyenne de la fumée de votre équipement qui est {{ results['medium']['humidity'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la fumée de votre équipement qui est {{ results['recent']['humidity'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+    </ul>
+  </div>
+  {% endif %}
+</div>
+
+
 {% endif %}
 <div class="home-element">
   <h3 class="home-title">La plateforme qui revolutionne l'utilisation de l'energie</h3>
