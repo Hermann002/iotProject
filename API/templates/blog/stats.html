@@ -19,40 +19,55 @@
         <h3>Variance</h3> <p>La variance permet d'évaluer la dispersion des données autour de la moyenne. Une valeur de variance plus élevée indique une plus grande dispersion des données, ce qui signifie que les valeurs sont plus éloignées de la moyenne. Cela peut être utile pour comprendre la variabilité des données et prendre des décisions basées sur la répartition des valeurs.</p>
     </div>
     <div class="cubes">
-        {% if g.user['temp_hum'] %}
-        <h2>temperature <img src="https://cdn-icons-png.flaticon.com/512/1113/1113890.png" alt="thermometer" width="30px" height="auto"></h2> 
-        <div class="item">
-            <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }}°c </span></div>
-            <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['temperature'] }} </span></div>
-            <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['temperature'] }} </span></div>
-            <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['temperature'])[0] }} </span></div>
-            <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['temperature'] }} </span></div>
-            <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['temperature'] }} </span></div>
-        </div>
-        {% endif %}
-        
-        {% if g.user['volt_int'] %}
-        <h2>tension <img src="https://cdn-icons-png.flaticon.com/512/813/813774.png" alt="voltage" width="30px" height="auto"></h2>
-        <div class="item">
-            <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }} V </span></div>
-            <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['temperature'] }} </span></div>
-            <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['temperature'] }} </span></div>
-            <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['temperature'])[0] }} </span></div>
-            <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['temperature'] }} </span></div>
-            <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['temperature'] }} </span></div>
-        </div>
-        {% endif %}
+        {% if not results %}
+            <h1>Vos données ne sont pas à jour ou disponibles pour le moment !</h1>
+        {% else %}
+            {% if g.user['temp_hum'] %}
+            <h2>temperature <img src="https://cdn-icons-png.flaticon.com/512/1113/1113890.png" alt="thermometer" width="30px" height="auto"></h2> 
+            <div class="item">
+                <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['temperature'] }}°c </span></div>
+                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['temperature'] }} </span></div>
+                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['temperature'] }} </span></div>
+                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['temperature'])[0] }} </span></div>
+                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['temperature'] }} </span></div>
+                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['temperature'] }} </span></div>
+            </div>
+            {% endif %}
+            
+            {% if g.user['volt_int'] %}
+            <h2>tension <img src="https://cdn-icons-png.flaticon.com/512/813/813774.png" alt="voltage" width="30px" height="auto"></h2>
+            <div class="item">
+                <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['voltage'] }} V </span></div>
+                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['voltage'] }} </span></div>
+                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['voltage'] }} </span></div>
+                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['voltage'])[0] }} </span></div>
+                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['voltage'] }} </span></div>
+                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['voltage'] }} </span></div>
+            </div>
 
-        {% if g.user['smoke'] %}
-        <h2>Fumée <img src="https://cdn-icons-png.flaticon.com/512/7398/7398108.png" alt="voltage" width="30px" height="auto"></h2>
-        <div class="item">
-            <div class="cube"><h3>valeur actuelle</h3><span  class="val_sat valeur"> {{ results['recent']['humidity'] }}% </span></div>
-            <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['humidity'] }} </span></div>
-            <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['humidity'] }} </span></div>
-            <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['humidity'])[0] }} </span></div>
-            <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['humidity'] }} </span></div>
-            <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['humidity'] }} </span></div>
-        </div>
+            <h2>Intensité <img src="https://cdn-icons-png.flaticon.com/512/813/813774.png" alt="voltage" width="30px" height="auto"></h2>
+            <div class="item">
+                <div class="cube"><h3>valeur actuelle</h3><span class="val_sat valeur"> {{ results['recent']['intensity'] }} V </span></div>
+                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['intensity'] }} </span></div>
+                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['intensity'] }} </span></div>
+                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['intensity'])[0] }} </span></div>
+                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['intensity'] }} </span></div>
+                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['intensity'] }} </span></div>
+            </div>
+            {% endif %}
+
+            {% if g.user['smoke'] %}
+            <h2>Fumée <img src="https://cdn-icons-png.flaticon.com/512/7398/7398108.png" alt="voltage" width="30px" height="auto"></h2>
+            <div class="item">
+                <div class="cube"><h3>valeur actuelle</h3><span  class="val_sat valeur"> {{ results['recent']['humidity'] }}% </span></div>
+                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['humidity'] }} </span></div>
+                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['humidity'] }} </span></div>
+                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['humidity'])[0] }} </span></div>
+                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['humidity'] }} </span></div>
+                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['humidity'] }} </span></div>
+            </div>
+            {% endif %}
+        
         {% endif %}
     </div>
 </div>

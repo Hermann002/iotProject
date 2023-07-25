@@ -15,17 +15,15 @@
 {% block content %}
 
 
-{% if g.user and not g.user['is_admin'] %}
+{% if g.user and not g.user['is_admin'] and results %}
   <div class="etat-appareil">
     <h2 class="etat-actuel">Etat actuel-
-    {% if danger['temp'] or danger['volt'] or danger['smoke'] %}
-      {% if imminent['temp'] or imminent['volt'] or imminent['smoke'] %}
+    {% if danger['temp'] or danger['volt'] or danger['int'] or danger['smoke'] %}
       <div class="voyant red"></div>
-      {% else %}
+    {% elif imminent['temp'] or imminent['volt'] or imminent['int'] or imminent['smoke'] %}
       <div class="voyant orange"></div>
-      {% endif %}
     {% else %}
-    <div class="voyant green"></div>
+      <div class="voyant green"></div>    
     {% endif %}
     </h2>
   </div>
@@ -36,8 +34,8 @@
   <div class="explain-part">
     <p>Les cas suivants sont possibles :</p>
     <ul>
-      <li> La valeur moyenne de la température de votre équipement qui est {{ results['medium']['temperature'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
-      <li> La valeur actuelle de la température de votre équipement qui est {{ results['recent']['temperature'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+      <li> La valeur moyenne de la température de votre équipement qui est <b>{{ results['medium']['temperature'] }}</b> exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la température de votre équipement qui est <b>{{ results['recent']['temperature'] }}</b> exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
     </ul>
   </div>
   {% endif %}
@@ -45,8 +43,17 @@
   <div class="explain-part">
     <p>Les cas suivants sont possibles :</p>
     <ul>
-      <li> La valeur moyenne de la tension de votre équipement qui est {{ results['medium']['temperature'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
-      <li> La valeur actuelle de la tension de votre équipement qui est {{ results['recent']['temperature'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+      <li> La valeur moyenne de la tension de votre équipement qui est <b>{{ results['medium']['voltage'] }}</b> exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la tension de votre équipement qui est <b>{{ results['recent']['voltage'] }}</b> exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+    </ul>
+  </div>
+  {% endif %}
+  {% if danger['int'] and imminent['int'] %}
+  <div class="explain-part">
+    <p>Les cas suivants sont possibles :</p>
+    <ul>
+      <li> La valeur moyenne de la tension de votre équipement qui est <b>{{ results['medium']['intensity'] }}</b> exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la tension de votre équipement qui est <b>{{ results['recent']['intensity'] }}</b> exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
     </ul>
   </div>
   {% endif %}
@@ -54,14 +61,15 @@
   <div class="explain-part">
     <p>Les cas suivants sont possibles :</p>
     <ul>
-      <li> La valeur moyenne de la fumée de votre équipement qui est {{ results['medium']['humidity'] }} exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
-      <li> La valeur actuelle de la fumée de votre équipement qui est {{ results['recent']['humidity'] }} exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
+      <li> La valeur moyenne de la fumée de votre équipement qui est <b>{{ results['medium']['humidity'] }}</b> exède ou approche dangereusement de la valeur maximale que vous avez renseigné</li>
+      <li> La valeur actuelle de la fumée de votre équipement qui est <b>{{ results['recent']['humidity'] }}</b> exède ou approche dangereusement la valuer maximale que vous avez renseigné</li>
     </ul>
   </div>
   {% endif %}
 </div>
 
-
+{% elif g.user and not g.user['is_admin'] and not results %}
+  <h1>Vos données ne sont pas à jour ou disponibles pour le moment !</h1>
 {% endif %}
 <div class="home-element">
   <h3 class="home-title">La plateforme qui revolutionne l'utilisation de l'energie</h3>

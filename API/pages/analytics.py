@@ -22,6 +22,18 @@ def layout(token=None):
     try:
     # App layout
         lay = html.Div([
+            html.Header(
+                [
+                    html.Span('Dashboard', className='title-header'),
+                    html.Nav([
+                        html.A("Acceuil", href="http://127.0.0.1:5000", className='nav-item'),
+                        html.P(g.user['username'], className='username nav-item'),
+                        html.A("Sortir", href=" http://127.0.0.1:5000/logout/", className='nav-item'),
+                        html.A("Graph", href="#", className='nav-item'),
+                        html.A("Stats", href=" http://127.0.0.1:5000/stats/", className='nav-item')], className="nav-bar")
+                ],className="app-header"),
+
+
             html.Div([
                 html.H2('My First App with Data, Graph, and Controls', className="text")
             ]),
@@ -51,7 +63,7 @@ def layout(token=None):
                                     className = "analytics",
                                     children = [
                                                     html.Div([
-                                                        dcc.Graph(figure=px.line(df, x='created', y='temperature'), className='my-first-graph-final',  id='graph')
+                                                        dcc.Graph(figure=px.line(df, x='created', y=['voltage', 'intensity']), className='my-first-graph-final',  id='graph')
                                                             ], className='grh'),
                                                 ]
                                     ) if permission['volt_int'] == True else None,
@@ -75,7 +87,20 @@ def layout(token=None):
         return lay
 
     except:
-        return html.H2('Rien à Afficher pour l\'instant !', className="text")
+        lay = html.Div([
+        html.Header(
+                [
+                    html.Span('Dashboard', className='title-header'),
+                    html.Nav([
+                        html.A("Acceuil", href="http://192.168.100.27:5000", className='nav-item'),
+                        html.P(g.user['username'], className='username nav-item'),
+                        html.A("Sortir", href=" http://192.168.100.27:5000/logout/", className='nav-item'),
+                        html.A("Graph", href="#", className='nav-item'),
+                        html.A("Stats", href=" http://192.168.100.27:5000/stats/", className='nav-item')], className="nav-bar")
+                ],className="app-header"),
+        html.H2('Rien à Afficher pour l\'instant !', className="text")
+                ])
+        return lay
     
    
 

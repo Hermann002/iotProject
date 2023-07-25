@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, redirect
+from flask import Flask, redirect, g
 from dash import Dash
 import dash
 
@@ -30,18 +30,6 @@ def create_app(test_config = None):
         # Set the layout
         app.layout = html.Div([
             # html.Link(rel='icon', type='image/x-icon', href='https://cdn-icons-png.flaticon.com/512/6080/6080697.png'),
-            html.Header(
-                [
-                    html.Span('Dashboard', className='title-header'),
-                    html.Nav([
-                        html.A("Acceuil", href=" http://127.0.0.1:5000", className='nav-item'),
-                        html.P("Hermann", className='username nav-item'),
-                        html.A("Sortir", href=" http://127.0.0.1:5000/logout/", className='nav-item'),
-                        html.A("Graph", href="#", className='nav-item'),
-                        html.A("Stats", href=" http://127.0.0.1:5000/stats/", className='nav-item')], className="nav-bar")
-                ],className="app-header"),
-            
-            
             dash.page_container
         ],className="main")
 

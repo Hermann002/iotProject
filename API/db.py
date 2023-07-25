@@ -111,7 +111,7 @@ def findToken():
 # def highValue():
 def Stats(token, date):
     client = connect()
-    print(type(date))
+    # print(type(date))
     myQuery = {
         'token' : token,
         'created': {
@@ -156,3 +156,9 @@ def essai():
     for colonne in df.columns:
         recent[colonne] = df[colonne].iloc[-1]
     return recent
+
+# from dateutil import parser
+
+# date = "2023-05-29"
+# datetime_obj = parser.isoparse(date)
+# print(datetime_obj)

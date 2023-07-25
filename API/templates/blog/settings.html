@@ -12,17 +12,20 @@
     <form class="form-settings" action="{{url_for('api.settings')}}" method="post">
         <h3 style="margin: 0 auto 15px; color: rgb(108, 221, 238);">Définition des valeurs max</h3>
         {% if g.user['temp_hum'] %}
-            <label for="temp">Entrer temperature max
+            <label for="temp">Entrer temperature max (en °c)
                 <input type="number" name="temp_max" id="temp" required>
             </label>
         {% endif %}
         {% if g.user['volt_int'] %}
-            <label for="volt">Entrer tension max
+            <label for="volt">Entrer tension max (en volt)
                 <input type="number" name="volt_max" id="volt" required>
+            </label>
+            <label for="int">Entrer intensité max (en Ampère)
+                <input type="number" name="int_max" id="int" required>
             </label>
         {% endif %}
         {% if g.user['smoke'] %}
-            <label for="smoke">Entrer Fumée max
+            <label for="smoke">Entrer Fumée max (en %)
                 <input type="number" name="smoke_max" id="smoke" required>
             </label>
         {% endif %}

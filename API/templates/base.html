@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,12 +17,12 @@
         <ul>
             {% if g.user %}
                 <li><span class="username"> {{ g.user['username'] }} </span></li>
-                <li><a href="{{ url_for('auth.logout') }}">Sortir</a></li>
                 <li><a href="/analytics/{{g.user['token']}}">Graph</a></li>
                 <li><a href="{{ url_for('api.stats') }}">Stats</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Se déconnecter</a></li>
             {% else %}
-                <li><a href="{{ url_for('auth.register') }}">S'enregistrer</a></li>
-                <li><a href="{{ url_for('auth.login') }}">s'identifier</a></li>
+                <li><a href="{{ url_for('auth.register') }}">s'enregistrer</a></li>
+                <li><a href="{{ url_for('auth.login') }}">se connecter</a></li>
             {% endif %}
         </ul>
     </nav>

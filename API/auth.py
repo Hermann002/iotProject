@@ -54,11 +54,11 @@ def register():
         error = None
 
         if not username:
-            error = 'Username is required.'
+            error = 'Nom d\'utilisateur requis.'
         elif not useremail:
-            error = 'Useremail is required.'
+            error = 'Email requis.'
         elif not password:
-            error = 'Password is required.'
+            error = 'Mot de passe requis.'
         
         if error is None:
             user = User(username, useremail, password)
@@ -90,7 +90,7 @@ def register():
                 db.commit()
                 db.close()
             except IntegrityError :
-                error  =  'already registered'
+                error  =  'Déjà enregistré'
             except Exception as e:
                 print(e)
                 error = "Veuillez vérifier votre connexion et reéssayez !"
@@ -120,9 +120,9 @@ def login():
             return render_template('auth/login.html')
         
         if user is None:
-            error = 'Incorrect useremail'
+            error = 'Email incorrect !'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password'
+            error = 'Mot de passe incorrect !'
         # set cookies
         if error is None:
             session.clear()
