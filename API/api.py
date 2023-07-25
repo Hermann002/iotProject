@@ -56,7 +56,7 @@ def index():
                     imminent['temp'] = True
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit <= results['recent']['temperature'] or permit <= results['medium']['temperature']:
+                elif permit >= results['recent']['temperature'] or permit >= results['medium']['temperature']:
                     danger['temp'] = False
                     imminent['temp'] = True
                 else:
@@ -69,7 +69,7 @@ def index():
                     imminent['volt'] = True
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit <= results['recent']['voltage'] or permit <= results['medium']['voltage'] :
+                elif permit >= results['recent']['voltage'] or permit >= results['medium']['voltage'] :
                     danger['volt'] = False
                     imminent['volt'] = True
                 else:
@@ -81,7 +81,7 @@ def index():
                     imminent['int'] = True
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
                     requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit <= results['recent']['intensity'] or permit <= results['medium']['intensity'] :
+                elif permit >= results['recent']['intensity'] or permit >= results['medium']['intensity'] :
                     danger['int'] = False
                     imminent['int'] = True
                 else:
@@ -92,9 +92,7 @@ def index():
                 if maximum['smoke_max'] <= results['recent']['humidity'] or maximum['smoke_max'] <= results['medium']['humidity']:
                     danger['smoke'] = True
                     imminent['smoke'] = True
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit <= results['recent']['humidity'] or permit <= results['medium']['humidity'] :
+                elif permit >= results['recent']['humidity'] or permit >= results['medium']['humidity'] :
                     danger['smoke'] = False
                     imminent['smoke'] = True
                 else:
