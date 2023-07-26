@@ -32,9 +32,10 @@ def fonction_a_executer():
             results = {}
         current_app.config['fonction_execute'] = True
         print(current_app.config['fonction_execute'])
+        print(user_token)
         print("La fonction s'exécute une seule fois.")
 
-    elif not user_token: 
+    if not user_token: 
         results = {}
         current_app.config['fonction_execute'] = False
         print(current_app.config['fonction_execute'])
@@ -54,9 +55,7 @@ def index():
                 if maximum['temp_max'] <= results['recent']['temperature'] or maximum['temp_max'] <= results['medium']['temperature']:
                     danger['temp'] = True
                     imminent['temp'] = True
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit >= results['recent']['temperature'] or permit >= results['medium']['temperature']:
+                elif permit <= results['recent']['temperature'] or permit <= results['medium']['temperature']:
                     danger['temp'] = False
                     imminent['temp'] = True
                 else:
@@ -64,24 +63,26 @@ def index():
                     imminent['temp'] = False
             if g.user['volt_int']:
                 permit =  maximum['volt_max'] - maximum['volt_max']*2/100
-                if maximum['volt_max'] <= results['recent']['voltage'] or maximum['volt_max'] <= results['medium']['voltage']:
+                if maximum['volt_max'] < results['recent']['voltage'] or maximum['volt_max'] < results['medium']['voltage']:
                     danger['volt'] = True
                     imminent['volt'] = True
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                elif permit >= results['recent']['voltage'] or permit >= results['medium']['voltage'] :
+                elif permit <= results['recent']['voltage'] or permit <= results['medium']['voltage'] :
                     danger['volt'] = False
+                    imminent['volt'] = True
+                elif permit > results['recent']['voltage'] or permit > results['medium']['voltage'] :
+                    danger['volt'] = True
                     imminent['volt'] = True
                 else:
                     danger['volt'] = False
                     imminent['volt'] = False
                 permit =  maximum['int_max'] - maximum['int_max']*2/100
-                if maximum['int_max'] <= results['recent']['intensity'] or maximum['int_max'] <= results['medium']['intensity']:
+                if maximum['int_max'] < results['recent']['intensity'] or maximum['int_max'] < results['medium']['intensity']:
                     danger['int'] = True
                     imminent['int'] = True
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
-                    requests.get('https://blynk.cloud/external/api/update?token=ffujYGgbf805tgsf&v1=100')
                 elif permit >= results['recent']['intensity'] or permit >= results['medium']['intensity'] :
+                    danger['int'] = True
+                    imminent['int'] = True
+                elif permit > results['recent']['intensity'] or permit > results['medium']['intensity'] :
                     danger['int'] = False
                     imminent['int'] = True
                 else:
@@ -89,10 +90,10 @@ def index():
                     imminent['int'] = False
             if g.user['smoke']:
                 permit =  maximum['smoke_max'] - maximum['smoke_max']*2/100
-                if maximum['smoke_max'] <= results['recent']['humidity'] or maximum['smoke_max'] <= results['medium']['humidity']:
+                if maximum['smoke_max'] < results['recent']['smoke'] or maximum['smoke_max'] < results['medium']['smoke']:
                     danger['smoke'] = True
                     imminent['smoke'] = True
-                elif permit >= results['recent']['humidity'] or permit >= results['medium']['humidity'] :
+                elif permit > results['recent']['smoke'] or permit > results['medium']['smoke'] :
                     danger['smoke'] = False
                     imminent['smoke'] = True
                 else:

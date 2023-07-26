@@ -74,7 +74,7 @@ def layout(token=None):
                                     className = "analytics",
                                     children = [
                                                     html.Div([
-                                                        dcc.Graph(figure=px.line(df, x='created', y='humidity'), className='my-first-graph-final',  id='graph')
+                                                        dcc.Graph(figure=px.line(df, x='created', y='smoke'), className='my-first-graph-final',  id='graph')
                                                             ], className='grh'),
                                                 ]
                                     ) if permission['smoke'] == True else None
@@ -92,9 +92,9 @@ def layout(token=None):
                 [
                     html.Span('Dashboard', className='title-header'),
                     html.Nav([
-                        html.A("Acceuil", href="http://192.168.100.27:5000", className='nav-item'),
+                        html.A("Acceuil", href="http://127.0.0.1:5000", className='nav-item'),
                         html.P(g.user['username'], className='username nav-item'),
-                        html.A("Sortir", href=" http://192.168.100.27:5000/logout/", className='nav-item'),
+                        html.A("Sortir", href=" http://127.0.0.1:5000/logout/", className='nav-item'),
                         html.A("Graph", href="#", className='nav-item'),
                         html.A("Stats", href=" http://192.168.100.27:5000/stats/", className='nav-item')], className="nav-bar")
                 ],className="app-header"),

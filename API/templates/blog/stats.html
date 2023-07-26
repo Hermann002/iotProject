@@ -59,12 +59,12 @@
             {% if g.user['smoke'] %}
             <h2>Fumée <img src="https://cdn-icons-png.flaticon.com/512/7398/7398108.png" alt="voltage" width="30px" height="auto"></h2>
             <div class="item">
-                <div class="cube"><h3>valeur actuelle</h3><span  class="val_sat valeur"> {{ results['recent']['humidity'] }}% </span></div>
-                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['humidity'] }} </span></div>
-                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['humidity'] }} </span></div>
-                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['humidity'])[0] }} </span></div>
-                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['humidity'] }} </span></div>
-                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['humidity'] }} </span></div>
+                <div class="cube"><h3>valeur actuelle</h3><span  class="val_sat valeur"> {{ results['recent']['smoke'] }}% </span></div>
+                <div class="cube"><h3>Moyenne</h3><span class="val_sat"> {{ results['medium']['smoke'] }} </span></div>
+                <div class="cube"><h3>Mediane</h3><span class="val_sat"> {{ results['median']['smoke'] }} </span></div>
+                <div class="cube"><h3>Mode</h3><span class="val_sat"> {{ dict(results['mode']['smoke'])[0] }} </span></div>
+                <div class="cube"><h3>Ecart-type</h3><span class="val_sat"> {{ results['ecart']['smoke'] }} </span></div>
+                <div class="cube"><h3>Variance</h3><span class="val_sat"> {{ results['variance']['smoke'] }} </span></div>
             </div>
             {% endif %}
         
