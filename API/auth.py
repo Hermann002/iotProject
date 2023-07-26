@@ -127,7 +127,7 @@ def login():
         if error is None:
             session.clear()
             session['user_token'] = user['token']
-            return redirect(url_for('index'))
+            return redirect(url_for('logs.index'))
         flash(error)
     return render_template('auth/login.html')
 
@@ -153,10 +153,10 @@ def load_logged_in_user():
 def logout():
     try:
         session.clear()
-        return redirect(url_for('index'))
+        return redirect(url_for('logs.index'))
     except:
         flash('Veillez vérifier votre connexion et reéssayez !')
-    return redirect(url_for('index'))
+    return redirect(url_for('logs.index'))
 
 def login_required(view):
     @functools.wraps(view)

@@ -3,13 +3,13 @@
 {% block header %}
   <h1 class="title-page" >{% block title %}IoT{% endblock %}</h1>
   {% if not g.user['is_admin'] %}
-    <a class="action action-settings" href="{{ url_for('api.index') }}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt=""> Back </a>
+    <a class="action action-settings" href="{{ url_for('logs.index') }}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt=""> Back </a>
   {% endif %}
 {% endblock %}
 
 
 {% block content %}
-    <form class="form-settings" action="{{url_for('api.settings')}}" method="post">
+    <form class="form-settings" action="{{url_for('logs.settings')}}" method="post">
         <h3 style="margin: 0 auto 15px; color: rgb(108, 221, 238);">Définition des valeurs max</h3>
         {% if g.user['temp_hum'] %}
             <label for="temp">Entrer temperature max (en °c)

@@ -2,7 +2,7 @@
 {% block title %}Stats{% endblock %}
 {% block header %}
     <h1 class="title-page">Stats</h1>
-    <form id="refresh_form" action="{{ url_for('api.refresh') }}" method="POST">
+    <form id="refresh_form" action="{{ url_for('logs.refresh') }}" method="POST">
     <input class = "btn" type="submit" value="Refresh">
     </form>
 {% endblock %}

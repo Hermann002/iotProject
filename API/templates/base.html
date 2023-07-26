@@ -13,12 +13,12 @@
 <body>
     <nav>
         <h1>DIGI-IoT</h1>
-        <a href="{{ url_for('api.index') }}">Accueil</a>
+        <a href="{{ url_for('logs.index') }}">Accueil</a>
         <ul>
             {% if g.user %}
                 <li><span class="username"> {{ g.user['username'] }} </span></li>
                 <li><a href="/analytics/{{g.user['token']}}">Graph</a></li>
-                <li><a href="{{ url_for('api.stats') }}">Stats</a></li>
+                <li><a href="{{ url_for('logs.stats') }}">Stats</a></li>
                 <li><a href="{{ url_for('auth.logout') }}">Se déconnecter</a></li>
             {% else %}
                 <li><a href="{{ url_for('auth.register') }}">s'enregistrer</a></li>

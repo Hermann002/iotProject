@@ -7,7 +7,7 @@
       <a class="action" href="/analytics/{{value}}"> {{ key }} </a>
     {% endfor %}
   {% elif g.user %}
-    <a class="action action-settings" href="{{url_for('api.settings')}}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt="">Paramètres</a>
+    <a class="action action-settings" href="{{url_for('logs.settings')}}"><img src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" width="20px" height="auto" alt="">Paramètres</a>
   {% endif %}
 {% endblock %}
 

@@ -6,8 +6,6 @@ import dash
 
 from dash import Dash, html, dcc
 
-from .auth import login_required
-
 """debut de l'Application dash"""
 
 def create_app(test_config = None):
@@ -45,9 +43,15 @@ def create_app(test_config = None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    from . import logs
+    app.register_blueprint(logs.bp)
+    app.add_url_rule('/logs', endpoint='index')
+
     from . import api
     app.register_blueprint(api.bp)
-    app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/', endpoint='add_message')
+
+
 
     # app.config.from_mapping(
     #     SECRET_KEY = 'dev',
