@@ -15,7 +15,7 @@ def get_db():
 
         """base de données en ligne"""
         # g.db = psycopg2.connect(
-        #     host='digishop.postgres.database.azure.com',
+        #     host='online.bd.com',
         #     port=5432,
         #     dbname='iot_database',
         #     user='digipos',
@@ -72,7 +72,7 @@ import pdb
 
 def connect():
 
-    uri = "mongodb+srv://Hermann:5e9V25ZsSHXdeZl3@cluster0.zjliq0a.mongodb.net/?retryWrites=true&w=majority"
+    uri = "mongodb+srv://Hermann:1235f456f51@cluster0.zjliq0a.mongodb.net/?retryWrites=true&w=majority"
     # uri = "mongodb://localhost:27017/"
     # Create a new client and connect to the server
     
